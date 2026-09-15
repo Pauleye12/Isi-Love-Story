@@ -6,8 +6,11 @@ import "../styles/admin.css";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Admin Portal — Wedding Manager" },
-    { name: "robots", content: "noindex, nofollow" },
+    { title: "Admin Portal — #TheIVLeague" },
+    {
+      name: "description",
+      content: "Manage Guest, Gift and check ins for #TheIVLeague",
+    },
   ];
 }
 
