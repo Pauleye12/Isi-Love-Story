@@ -24,7 +24,7 @@
   padding: 1.5rem;
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-    url("public/birthday-party.png");
+    url("./public/birthday-party.png");
   background-size: cover;
   background-position: center;
 }
