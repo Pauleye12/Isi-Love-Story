@@ -182,11 +182,12 @@ export async function action({ request }: Route.ActionArgs) {
   // --- Add Gift ---
   if (intent === "addGift") {
     const giftName = (formData.get("giftName") as string)?.trim();
-    const purchaseLink = (formData.get("purchaseLink") as string)?.trim();
+    const purchaseLink =
+      (formData.get("purchaseLink") as string)?.trim() || "#";
 
-    if (!giftName || !purchaseLink) {
+    if (!giftName) {
       return data(
-        { error: "Gift name and purchase link are required.", intent },
+        { error: "Gift name is required.", intent },
         { status: 400, headers },
       );
     }
@@ -716,7 +717,6 @@ export default function Admin({
                       type="url"
                       name="purchaseLink"
                       placeholder="https://..."
-                      required
                     />
                   </div>
                   <button
