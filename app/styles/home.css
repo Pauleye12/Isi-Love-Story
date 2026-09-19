@@ -1,0 +1,1595 @@
+/* ============================================================
+   WEDDING HOME PAGE — LUXURY EDITORIAL STYLES
+   With Melted Red Wax Seal Envelope Opener & Fancy Decor
+   ============================================================ */
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+  --wedding-cream: #faf7f2;
+  --wedding-cream-warm: #f4efe6;
+  --wedding-ivory: #fffdf9;
+  --wedding-sage: #5d7263;
+  --wedding-sage-light: #8b9d83;
+  --wedding-sage-deep: #38483b;
+  --wedding-sage-dark: #2a362d;
+  --wedding-gold: #c5a55a;
+  --wedding-gold-light: #e0c87e;
+  --wedding-gold-dark: #9e7d32;
+  --wedding-rose: #d9a098;
+  --wedding-blush: #f7eae5;
+  --wedding-charcoal: #262626;
+  --wedding-text: #4f4f4f;
+  --wedding-text-muted: #7e7e7e;
+  --wedding-white: #ffffff;
+
+  /* Red Wax Palette */
+  --wax-red-deep: #5a0815;
+  --wax-red-main: #8b1224;
+  --wax-red-light: #b81d35;
+  --wax-red-highlight: #e63956;
+  --wax-shadow: rgba(68, 6, 16, 0.45);
+
+  /* Fonts */
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-display: "Cinzel", serif;
+  --font-script: "Great Vibes", "Alex Brush", cursive;
+  --font-editorial: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Outfit", "Inter", -apple-system, sans-serif;
+}
+
+/* ---------- Global Reset & Container ---------- */
+.wedding-home {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--wedding-cream);
+  color: var(--wedding-charcoal);
+  font-family: var(--font-editorial);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Background delicate vintage paper grain / glow */
+.wedding-home::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(224, 200, 126, 0.08) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 65%,
+      rgba(139, 157, 131, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(217, 160, 152, 0.08) 0%,
+      transparent 45%
+    );
+  z-index: 1;
+}
+
+/* ============================================================
+   FLOATING PETALS & SPARKLES DECOR
+   ============================================================ */
+.floating-decor-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.floating-petal {
+  position: absolute;
+  top: -40px;
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(247, 234, 229, 0.75) 0%,
+    rgba(217, 160, 152, 0.45) 100%
+  );
+  filter: drop-shadow(0 2px 4px rgba(217, 160, 152, 0.2));
+  animation: fallPetal linear infinite;
+}
+
+.floating-sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--wedding-gold-light);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 6px rgba(224, 200, 126, 0.8));
+  animation: sparkleTwinkle ease-in-out infinite;
+}
+
+@keyframes fallPetal {
+  0% {
+    transform: translateY(-10px) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(60px);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0%,
+  100% {
+    transform: scale(0.4);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.95;
+  }
+}
+
+/* ============================================================
+   FULLSCREEN ENVELOPE OPENER INTRO (MATCHES REFERENCE DESIGN)
+   ============================================================ */
+.envelope-intro {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 9999;
+  background-color: #fcfbfa;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition:
+    transform 0.95s cubic-bezier(0.7, 0, 0.2, 1),
+    opacity 0.8s ease-in-out;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+.envelope-intro.opened {
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope-intro.dismissed {
+  display: none;
+}
+
+/* Top right hamburger menu icon */
+.fullscreen-envelope-menu {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.fullscreen-envelope-menu span {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background-color: #55554f;
+  border-radius: 2px;
+}
+
+/* ── Fullscreen Envelope Top Triangular Flap ── */
+.fullscreen-envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58%;
+  background: linear-gradient(180deg, #ffffff 0%, #fbf9f6 80%, #f4ede4 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 64%, 50% 100%, 0 64%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 64%, 50% 100%, 0 64%);
+  filter: drop-shadow(0 10px 24px rgba(45, 35, 25, 0.08));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: clamp(3.2rem, 9.5vh, 6.5rem);
+  z-index: 10;
+  transform-origin: top center;
+  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.envelope-intro.opening .fullscreen-envelope-flap {
+  transform: rotateX(180deg);
+}
+
+/* Couple names written directly on the flap (matches Olivia & James reference) */
+.fullscreen-flap-names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #5d6e66;
+  padding: 0 1.5rem;
+}
+
+.fullscreen-flap-names .flap-name {
+  font-family: var(--font-script), 'Cormorant Garamond', Georgia, cursive;
+  font-size: clamp(3.2rem, 11vw, 5.2rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+.fullscreen-flap-names .flap-amp {
+  font-family: var(--font-editorial), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.4rem, 4.5vw, 2.2rem);
+  color: #85988f;
+  margin: 0.15rem 0;
+  line-height: 1;
+}
+
+/* Fullscreen Envelope Fold & Crease Lines */
+.fullscreen-envelope-creases {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.fullscreen-envelope-creases svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Bottom CTA Text */
+.fullscreen-envelope-cta {
+  position: absolute;
+  bottom: clamp(2.5rem, 8vh, 5rem);
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.fullscreen-news-text {
+  font-family: var(--font-editorial), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.15rem, 3.6vw, 1.45rem);
+  color: #727a75;
+  margin: 0;
+}
+
+.fullscreen-slide-text {
+  font-family: var(--font-sans);
+  font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #88928d;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  animation: slideHintPulse 2s ease-in-out infinite;
+}
+
+@keyframes slideHintPulse {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+/* Semi-transparent play/slide indicator hint on the seal */
+.seal-play-arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 14px 0 14px 22px;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.38);
+  pointer-events: none;
+  z-index: 5;
+  animation: playFade 2.5s ease-in-out infinite;
+}
+
+@keyframes playFade {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ============================================================
+   MELTED RED WAX SEAL
+   ============================================================ */
+.wax-seal-container {
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 25;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wax-seal-container:active {
+  cursor: grabbing;
+}
+
+/* Melted Red Wax Puddle Background */
+.melted-wax-puddle {
+  position: absolute;
+  width: 104px;
+  height: 104px;
+  border-radius: 54% 46% 51% 49% / 48% 53% 47% 52%;
+  background: radial-gradient(
+    circle at 40% 40%,
+    #a51429 0%,
+    #720917 70%,
+    #4e040e 100%
+  );
+  box-shadow:
+    0 8px 28px var(--wax-shadow),
+    0 2px 6px rgba(0, 0, 0, 0.25);
+  animation: waxWobble 6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes waxWobble {
+  0% {
+    border-radius: 54% 46% 51% 49% / 48% 53% 47% 52%;
+    transform: rotate(0deg);
+  }
+  50% {
+    border-radius: 47% 53% 45% 55% / 54% 46% 54% 46%;
+    transform: rotate(2deg);
+  }
+  100% {
+    border-radius: 52% 48% 56% 44% / 46% 52% 48% 54%;
+    transform: rotate(-2deg);
+  }
+}
+
+/* Melted Wax Drips (Organic droplets dripping downward) */
+.wax-drip {
+  position: absolute;
+  background: radial-gradient(circle at 45% 35%, #9e1327 0%, #680715 80%);
+  border-radius: 50% 50% 60% 60%;
+  box-shadow: 0 4px 10px rgba(78, 4, 14, 0.4);
+  pointer-events: none;
+}
+
+.wax-drip-1 {
+  width: 14px;
+  height: 24px;
+  bottom: -16px;
+  left: 28px;
+  border-radius: 40% 40% 60% 60% / 30% 30% 70% 70%;
+}
+
+.wax-drip-2 {
+  width: 20px;
+  height: 34px;
+  bottom: -24px;
+  left: 48px;
+  border-radius: 35% 35% 65% 65% / 30% 30% 70% 70%;
+}
+
+.wax-drip-3 {
+  width: 12px;
+  height: 20px;
+  bottom: -14px;
+  right: 24px;
+  border-radius: 45% 45% 55% 55% / 35% 35% 65% 65%;
+}
+
+.wax-drip-drop {
+  position: absolute;
+  width: 8px;
+  height: 9px;
+  bottom: -32px;
+  left: 54px;
+  border-radius: 50%;
+  background: #840c1d;
+  box-shadow: 0 2px 4px rgba(78, 4, 14, 0.5);
+  animation: dripDrop 3s ease-in-out infinite;
+}
+
+@keyframes dripDrop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* Main Convex Wax Seal Disc */
+.wax-seal-disc {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #d62842 0%,
+    #b3182f 30%,
+    #880f21 70%,
+    #5e0715 100%
+  );
+  box-shadow:
+    inset 0 3px 6px rgba(255, 140, 160, 0.4),
+    inset 0 -4px 8px rgba(35, 2, 7, 0.6),
+    0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Inner Debossed Ring & Monogram Crest */
+.wax-seal-inner {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(245, 190, 120, 0.5);
+  box-shadow:
+    inset 0 2px 4px rgba(40, 2, 8, 0.8),
+    0 1px 2px rgba(255, 180, 190, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 45% 45%, #7c0d1e 0%, #540612 100%);
+}
+
+.wax-seal-monogram {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #f8d595;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.8),
+    0 -1px 1px rgba(255, 220, 160, 0.4);
+  line-height: 1;
+}
+
+.wax-seal-leaf-icon {
+  width: 22px;
+  height: 22px;
+  color: #ecc77a;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.8));
+  margin-top: 2px;
+}
+
+/* Pulsing Glow on the Seal to Invite Interaction */
+.wax-seal-glow {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(230, 57, 86, 0.35) 0%,
+    transparent 70%
+  );
+  animation: sealPulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes sealPulse {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+/* Upward Slide Instruction with Animated Chevron */
+.slide-up-guide {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+  user-select: none;
+}
+
+.slide-up-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--wedding-gold-dark);
+  animation: slideArrowBounce 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes slideArrowBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+.slide-up-text {
+  font-family: var(--font-sans);
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--wedding-sage-deep);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.35rem 1.2rem;
+  border-radius: 50px;
+  border: 1px solid rgba(224, 200, 126, 0.4);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.slide-up-subtext {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--wedding-text-muted);
+}
+
+/* ============================================================
+   TOP FLOATING APP BAR
+   ============================================================ */
+.wedding-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(250, 247, 242, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(224, 200, 126, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 100;
+  transition: all 0.4s ease;
+}
+
+.top-bar-monogram {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  color: var(--wedding-sage-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.top-bar-rsvp-btn {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--wedding-sage);
+  color: #fff;
+  padding: 0.4rem 1.1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(93, 114, 99, 0.25);
+}
+
+.top-bar-rsvp-btn:hover {
+  background: var(--wedding-sage-deep);
+  transform: translateY(-1px);
+}
+
+.top-bar-music-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(224, 200, 126, 0.4);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--wedding-sage-deep);
+  transition: all 0.3s ease;
+}
+
+.top-bar-music-btn:hover {
+  background: var(--wedding-blush);
+  transform: rotate(15deg);
+}
+
+/* ============================================================
+   MAIN CONTENT WRAPPER
+   ============================================================ */
+.wedding-content {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
+    transform 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  padding-top: 64px;
+}
+
+.wedding-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered Scroll Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition:
+    opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition:
+    opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-35px);
+  transition:
+    opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(35px);
+  transition:
+    opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-delay-1 {
+  transition-delay: 0.15s;
+}
+.reveal-delay-2 {
+  transition-delay: 0.3s;
+}
+.reveal-delay-3 {
+  transition-delay: 0.45s;
+}
+.reveal-delay-4 {
+  transition-delay: 0.6s;
+}
+
+/* ============================================================
+   HERO SECTION (FLORAL WREATH & NAMES)
+   ============================================================ */
+.hero-section {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem 4rem;
+  overflow: hidden;
+}
+
+.hero-wreath-container {
+  position: relative;
+  width: min(88vw, 420px);
+  aspect-ratio: 1 / 1.18;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.hero-wreath-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 30px rgba(93, 114, 99, 0.2));
+  animation: gentleBreathe 8s ease-in-out infinite;
+}
+
+@keyframes gentleBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.hero-text-block {
+  position: relative;
+  z-index: 2;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-greeting {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--wedding-sage);
+  margin-bottom: 0.5rem;
+}
+
+.hero-title-bride,
+.hero-title-groom {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 8.5vw, 3.8rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--wedding-sage-deep);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.hero-title-ampersand {
+  font-family: var(--font-script);
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  color: var(--wedding-gold);
+  line-height: 0.9;
+  margin: 0.1rem 0;
+}
+
+.hero-tagline {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: clamp(1.1rem, 3.2vw, 1.35rem);
+  color: var(--wedding-text);
+  margin-top: 0.6rem;
+}
+
+.hero-date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+  padding: 0.4rem 1.4rem;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(224, 200, 126, 0.4);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.hero-date-text {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--wedding-charcoal);
+}
+
+.hero-explore-btn {
+  margin-top: 1.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2.4rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--wedding-sage-deep);
+  background: transparent;
+  border: 1.5px solid var(--wedding-sage-deep);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  text-decoration: none;
+}
+
+.hero-explore-btn:hover {
+  background: var(--wedding-sage-deep);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 72, 59, 0.25);
+}
+
+/* ============================================================
+   DECORATIVE ORNAMENTS & FLOURISHES
+   ============================================================ */
+.section-flourish {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0.8rem auto 2.2rem;
+}
+
+.flourish-line {
+  width: 45px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--wedding-gold));
+}
+
+.flourish-line.reverse {
+  background: linear-gradient(90deg, var(--wedding-gold), transparent);
+}
+
+.flourish-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--wedding-gold);
+}
+
+/* Common Section Header */
+.section-heading-block {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--wedding-sage);
+  margin-bottom: 0.4rem;
+}
+
+.section-main-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 6.5vw, 2.8rem);
+  font-weight: 400;
+  color: var(--wedding-charcoal);
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   OUR PROMISES SECTION
+   ============================================================ */
+.promises-section {
+  padding: 4.5rem 1.5rem;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.promise-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem 1.6rem;
+  margin-bottom: 1.8rem;
+  border: 1px solid rgba(224, 200, 126, 0.25);
+  box-shadow:
+    0 4px 25px rgba(0, 0, 0, 0.03),
+    0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: all 0.35s ease;
+  overflow: hidden;
+}
+
+.promise-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--wedding-gold) 0%,
+    var(--wedding-rose) 100%
+  );
+}
+
+.promise-card.groom::before {
+  background: linear-gradient(
+    180deg,
+    var(--wedding-sage) 0%,
+    var(--wedding-sage-deep) 100%
+  );
+}
+
+.promise-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+.promise-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.promise-avatar-wrapper {
+  position: relative;
+}
+
+.promise-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--wedding-blush) 0%, #f0d5cd 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-script);
+  font-size: 1.7rem;
+  color: var(--wedding-sage-deep);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.promise-avatar.groom {
+  background: linear-gradient(
+    135deg,
+    var(--wedding-sage-light) 0%,
+    var(--wedding-sage-deep) 100%
+  );
+  color: #fff;
+}
+
+.promise-author-name {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--wedding-charcoal);
+  line-height: 1.2;
+}
+
+.promise-author-role {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--wedding-gold-dark);
+}
+
+.promise-quote-text {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 1.12rem;
+  line-height: 1.8;
+  color: var(--wedding-text);
+  position: relative;
+}
+
+.promise-quote-mark {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  line-height: 0;
+  vertical-align: -0.4rem;
+  color: var(--wedding-gold-light);
+  margin-right: 0.3rem;
+}
+
+/* ============================================================
+   GARDEN ROMANCE (THEME & ATTIRE)
+   ============================================================ */
+.garden-romance-section {
+  padding: 4.5rem 1.5rem;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.garden-desc-paragraph {
+  font-family: var(--font-editorial);
+  font-size: 1.15rem;
+  line-height: 1.85;
+  text-align: center;
+  color: var(--wedding-text);
+  max-width: 520px;
+  margin: 0 auto 2.2rem;
+}
+
+/* Dual Gallery Cards */
+.garden-gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.garden-photo-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(224, 200, 126, 0.25);
+  background: #fff;
+}
+
+.garden-photo-img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.garden-photo-card:hover .garden-photo-img {
+  transform: scale(1.05);
+}
+
+.garden-photo-badge {
+  position: absolute;
+  bottom: 0.8rem;
+  left: 0.8rem;
+  right: 0.8rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wedding-sage-deep);
+}
+
+/* Color Palette Swatches */
+.wedding-palette-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.6rem 1.2rem;
+  border: 1px solid rgba(224, 200, 126, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  text-align: center;
+}
+
+.palette-title {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--wedding-text-muted);
+  margin-bottom: 1.2rem;
+}
+
+.palette-swatches-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.palette-swatch-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.palette-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.palette-circle:hover {
+  transform: scale(1.2);
+}
+
+.palette-name {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  color: var(--wedding-text-muted);
+  font-weight: 500;
+}
+
+/* ============================================================
+   THE VENUE SECTION
+   ============================================================ */
+.venue-section {
+  padding: 4.5rem 1.5rem;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(244, 239, 230, 0.6) 100%
+  );
+}
+
+.venue-card-wrapper {
+  max-width: 650px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(224, 200, 126, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.venue-image-banner {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+
+.venue-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.venue-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.venue-banner-title {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 1.5rem;
+  color: #fff;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.venue-content-body {
+  padding: 2rem 1.6rem;
+  text-align: center;
+}
+
+.venue-address-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--wedding-text);
+  margin-bottom: 2rem;
+}
+
+.venue-address-icon {
+  color: var(--wedding-rose);
+  font-size: 1.1rem;
+}
+
+/* Schedule Time Cards */
+.venue-schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.schedule-card {
+  background: var(--wedding-cream);
+  border-radius: 12px;
+  padding: 1.4rem 1rem;
+  border: 1px solid rgba(224, 200, 126, 0.25);
+  transition: all 0.3s ease;
+}
+
+.schedule-card:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.schedule-event-type {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--wedding-gold-dark);
+  margin-bottom: 0.4rem;
+}
+
+.schedule-event-time {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--wedding-charcoal);
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+
+.schedule-event-detail {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--wedding-text-muted);
+}
+
+/* Map Button */
+.venue-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 2.2rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--wedding-sage-deep);
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(56, 72, 59, 0.25);
+}
+
+.venue-map-link:hover {
+  background: var(--wedding-sage);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 72, 59, 0.35);
+}
+
+/* ============================================================
+   REGISTRY SECTION
+   ============================================================ */
+.registry-section {
+  padding: 4.5rem 1.5rem;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.registry-intro-text {
+  font-family: var(--font-editorial);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  text-align: center;
+  color: var(--wedding-text);
+  max-width: 480px;
+  margin: 0 auto 2.2rem;
+}
+
+.registry-card-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(224, 200, 126, 0.25);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.registry-card-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.registry-left-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.registry-badge-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--wedding-blush);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--wax-red-main);
+}
+
+.registry-item-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--wedding-charcoal);
+}
+
+.registry-action-btn {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.6rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.registry-action-btn.primary {
+  background: var(--wedding-sage-deep);
+  color: #fff;
+}
+
+.registry-action-btn.primary:hover {
+  background: var(--wedding-sage);
+}
+
+.registry-action-btn.outline {
+  background: transparent;
+  color: var(--wedding-charcoal);
+  border: 1.5px solid var(--wedding-charcoal);
+}
+
+.registry-action-btn.outline:hover {
+  background: var(--wedding-charcoal);
+  color: #fff;
+}
+
+/* ============================================================
+   COUNTDOWN & FOOTER SECTION
+   ============================================================ */
+.footer-countdown-section {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    var(--wedding-sage-deep) 0%,
+    #243026 100%
+  );
+  color: #ffffff;
+  padding: 5rem 1.5rem 3rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.footer-countdown-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 20%,
+    rgba(224, 200, 126, 0.15) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.countdown-super-title {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--wedding-gold-light);
+  margin-bottom: 2rem;
+}
+
+/* Countdown 4 Dials */
+.countdown-dials-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 3vw, 1.5rem);
+  margin-bottom: 3.5rem;
+}
+
+.countdown-dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.countdown-circle {
+  width: clamp(62px, 18vw, 84px);
+  height: clamp(62px, 18vw, 84px);
+  border-radius: 50%;
+  border: 1.5px solid rgba(224, 200, 126, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.25),
+    inset 0 0 15px rgba(224, 200, 126, 0.1);
+  margin-bottom: 0.5rem;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.countdown-circle:hover {
+  transform: scale(1.08);
+  border-color: var(--wedding-gold-light);
+}
+
+.countdown-value {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 4.5vw, 2.2rem);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.countdown-unit-label {
+  font-family: var(--font-sans);
+  font-size: clamp(0.6rem, 1.8vw, 0.7rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.footer-couple-names {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  font-weight: 400;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.footer-love-message {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 440px;
+  margin: 0 auto 2.5rem;
+}
+
+.replay-opener-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--wedding-gold-light);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(224, 200, 126, 0.35);
+  padding: 0.5rem 1.4rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.replay-opener-btn:hover {
+  background: rgba(224, 200, 126, 0.2);
+  transform: translateY(-2px);
+}
+
+.footer-social-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-social-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.footer-social-icon:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-color: var(--wedding-gold-light);
+  transform: scale(1.1);
+}
+
+.footer-signature-tag {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 640px) {
+  .hero-wreath-container {
+    width: 95vw;
+  }
+  .garden-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  .garden-photo-img {
+    height: 200px;
+  }
+  .venue-schedule-grid {
+    grid-template-columns: 1fr;
+  }
+}

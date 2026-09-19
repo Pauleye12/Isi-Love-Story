@@ -1,15 +1,143 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: 'Outfit', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-display: 'Cinzel', serif;
+  --font-script: 'Great Vibes', 'Alex Brush', cursive;
+  --font-editorial: 'Cormorant Garamond', Georgia, serif;
+
+  --color-wedding-cream: #FAF7F2;
+  --color-wedding-cream-warm: #F4EFE6;
+  --color-wedding-ivory: #FFFDF9;
+  --color-wedding-sage: #5D7263;
+  --color-wedding-sage-light: #8B9D83;
+  --color-wedding-sage-deep: #38483B;
+  --color-wedding-sage-dark: #2A362D;
+  --color-wedding-gold: #C5A55A;
+  --color-wedding-gold-light: #E0C87E;
+  --color-wedding-gold-dark: #9E7D32;
+  --color-wedding-rose: #D9A098;
+  --color-wedding-blush: #F7EAE5;
+  --color-wedding-charcoal: #262626;
+  --color-wedding-text: #4F4F4F;
+  --color-wedding-text-muted: #7E7E7E;
+
+  --color-wax-red-deep: #5A0815;
+  --color-wax-red-main: #8B1224;
+  --color-wax-red-light: #B81D35;
+  --color-wax-red-highlight: #E63956;
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  background-color: var(--color-wedding-cream);
+  color: var(--color-wedding-charcoal);
+  font-family: var(--font-editorial);
+  overflow-x: hidden;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+/* ─────────────────── SCROLL REVEAL UTILITIES ─────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-35px);
+  transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(35px);
+  transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+/* ─────────────────── KEYFRAME ANIMATIONS ─────────────────── */
+@keyframes waxWobble {
+  0% { border-radius: 54% 46% 51% 49% / 48% 53% 47% 52%; transform: rotate(0deg); }
+  50% { border-radius: 47% 53% 45% 55% / 54% 46% 54% 46%; transform: rotate(2deg); }
+  100% { border-radius: 52% 48% 56% 44% / 46% 52% 48% 54%; transform: rotate(-2deg); }
+}
+
+@keyframes dripDrop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+@keyframes sealPulse {
+  0%, 100% { transform: scale(0.95); opacity: 0.4; }
+  50% { transform: scale(1.15); opacity: 0.9; }
+}
+
+@keyframes slideHintPulse {
+  0%, 100% { transform: translateY(0); opacity: 0.75; }
+  50% { transform: translateY(-5px); opacity: 1; }
+}
+
+@keyframes playFade {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes fallPetal {
+  0% {
+    transform: translateY(-10px) rotate(0deg) translateX(0);
+    opacity: 0;
   }
+  10% { opacity: 0.85; }
+  90% { opacity: 0.85; }
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(60px);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { transform: scale(0.4); opacity: 0.2; }
+  50% { transform: scale(1.4); opacity: 0.95; }
+}
+
+@keyframes gentleBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
 }
