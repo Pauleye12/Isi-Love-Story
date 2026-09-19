@@ -235,16 +235,6 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Top right hamburger menu icon */}
-      <div
-        className="absolute top-6 right-6 z-50 flex flex-col gap-1.25 cursor-pointer p-1.5"
-        aria-hidden="true"
-      >
-        <span className="block w-6.5 h-0.5 bg-[#55554F] rounded-full" />
-        <span className="block w-6.5 h-0.5 bg-[#55554F] rounded-full" />
-        <span className="block w-6.5 h-0.5 bg-[#55554F] rounded-full" />
-      </div>
-
       {/* ── Fullscreen Envelope Top Triangular Flap with Couple Names Written on It ── */}
       <div
         className={`absolute top-0 inset-x-0 h-[58%] bg-linear-to-b from-white via-[#FBF9F6] to-[#F4EDE4] [clip-path:polygon(0_0,100%_0,100%_64%,50%_100%,0_64%)] drop-shadow-[0_10px_24px_rgba(45,35,25,0.08)] flex flex-col items-center justify-start pt-40 sm:pt-20 z-10 origin-top transition-transform duration-850 ease-in-out ${
@@ -350,7 +340,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
       </div>
 
       {/* Bottom CTA Text: "We have some news..." & "TAP HERE & SLIDE ›" */}
-      <div className="absolute bottom-8 sm:bottom-14 inset-x-0 text-center z-15 flex flex-col items-center gap-2">
+      <div className="absolute bottom-20 sm:bottom-14 inset-x-0 text-center z-15 flex flex-col items-center gap-2">
         <p className="font-editorial italic text-lg sm:text-xl text-[#727A75] m-0">
           We have some news...
         </p>
