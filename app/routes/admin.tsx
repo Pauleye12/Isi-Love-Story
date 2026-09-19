@@ -29,12 +29,12 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   if (!user) {
     return data(
-      { authenticated: false as const, guests: [], gifts: [], error: null },
+      { authenticated: false as const, guests: [], gifts: [], displayTexts: null, error: null },
       { headers },
     );
   }
 
-  const [guestsRes, giftsRes] = await Promise.all([
+  const [guestsRes, giftsRes, displayTextsRes] = await Promise.all([
     supabase
       .from("guests")
       .select("*")
@@ -43,6 +43,12 @@ export async function loader({ request }: Route.LoaderArgs) {
       .from("gifts")
       .select("*")
       .order("created_at", { ascending: false }),
+    supabase
+      .from("DisplayTexts")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
   ]);
 
   return data(
@@ -50,6 +56,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       authenticated: true as const,
       guests: guestsRes.data ?? [],
       gifts: giftsRes.data ?? [],
+      displayTexts: displayTextsRes.data ?? null,
       error: null,
     },
     { headers },
@@ -208,6 +215,47 @@ export async function action({ request }: Route.ActionArgs) {
     return data({ error: null, intent }, { headers });
   }
 
+  // --- Add / Update Display Text ---
+  if (intent === "addDisplayText") {
+    const monitizationText =
+      (formData.get("monitizationText") as string)?.trim() || "";
+    const JumiaPickup = (formData.get("jumiaPickup") as string)?.trim() || "";
+
+    const bankName = (formData.get("bankName") as string)?.trim();
+    const accountName = (formData.get("accountName") as string)?.trim();
+    const accountNumber = (formData.get("accountNumber") as string)?.trim();
+    const existingId = (formData.get("displayTextId") as string)?.trim() || null;
+
+    const payload = {
+      jumia_pickup: JumiaPickup,
+      monitization_text: monitizationText,
+      bank_name: bankName,
+      account_number: accountNumber,
+      account_name: accountName,
+    };
+
+    let error;
+    if (existingId) {
+      // Update existing row
+      ({ error } = await supabase
+        .from("DisplayTexts")
+        .update(payload)
+        .eq("id", existingId));
+    } else {
+      // Insert new row
+      ({ error } = await supabase.from("DisplayTexts").insert(payload));
+    }
+
+    if (error) {
+      return data(
+        { error: `Failed to save text: ${error.message}`, intent },
+        { status: 500, headers },
+      );
+    }
+
+    return data({ error: null, intent }, { headers });
+  }
+
   // --- Delete Gift ---
   if (intent === "deleteGift") {
     const giftId = formData.get("giftId") as string;
@@ -224,23 +272,23 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   // --- Check In Guest ---
-  if (intent === "checkInGuest") {
-    const guestId = formData.get("guestId") as string;
+  // if (intent === "checkInGuest") {
+  //   const guestId = formData.get("guestId") as string;
 
-    const { error } = await supabase
-      .from("guests")
-      .update({ checked_in: true })
-      .eq("id", guestId);
+  //   const { error } = await supabase
+  //     .from("guests")
+  //     .update({ checked_in: true })
+  //     .eq("id", guestId);
 
-    if (error) {
-      return data(
-        { error: `Failed to check in guest: ${error.message}`, intent },
-        { status: 500, headers },
-      );
-    }
+  //   if (error) {
+  //     return data(
+  //       { error: `Failed to check in guest: ${error.message}`, intent },
+  //       { status: 500, headers },
+  //     );
+  //   }
 
-    return data({ error: null, intent }, { headers });
-  }
+  //   return data({ error: null, intent }, { headers });
+  // }
 
   return data(
     { error: "Unknown action.", intent: null },
@@ -255,13 +303,13 @@ export default function Admin({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const { authenticated, guests, gifts } = loaderData;
+  const { authenticated, guests, gifts, displayTexts } = loaderData;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const [activeTab, setActiveTab] = useState<"guests" | "gifts" | "checkin">(
-    "guests",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "guests" | "gifts" | "displayTexts"
+  >("guests");
   const [editingGuestId, setEditingGuestId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
 
@@ -286,11 +334,11 @@ export default function Admin({
     setCheckinSearched(true);
   }
 
-  function resetCheckin() {
-    setCheckinQuery("");
-    setCheckinResult(null);
-    setCheckinSearched(false);
-  }
+  // function resetCheckin() {
+  //   setCheckinQuery("");
+  //   setCheckinResult(null);
+  //   setCheckinSearched(false);
+  // }
 
   // --- Confirmation modal state ---
   const [confirmModal, setConfirmModal] = useState<{
@@ -454,13 +502,13 @@ export default function Admin({
         </button>
         <button
           type="button"
-          className={`tab-btn ${activeTab === "checkin" ? "active" : ""}`}
+          className={`tab-btn ${activeTab === "displayTexts" ? "active" : ""}`}
           onClick={() => {
-            setActiveTab("checkin");
-            resetCheckin();
+            setActiveTab("displayTexts");
+            // resetCheckin();
           }}
         >
-          Check In
+          Dispaly Texts
         </button>
       </nav>
 
@@ -816,11 +864,109 @@ export default function Admin({
           </>
         )}
 
-        {/* ======================== CHECK IN TAB ======================== */}
-        {activeTab === "checkin" && (
+        {/* ======================== DISPLAY TEXTS TAB ======================== */}
+        {activeTab === "displayTexts" && (
           <>
-            {/* Stats */}
-            <div className="stats-row">
+            {/* Hero Section */}
+            <div className="section-card">
+              <div className="section-card-header">
+                {/* <h2>Hero Section</h2> */}
+              </div>
+              <div className="section-card-body">
+                <Form method="post" className="add-form">
+                  <input type="hidden" name="_action" value="addDisplayText" />
+                  {displayTexts?.id && (
+                    <input type="hidden" name="displayTextId" value={displayTexts.id} />
+                  )}
+                  <div className="flex w-full justify-between flex-col sm:flex-row gap-7 ">
+                    <div className="form-group w-full">
+                      <label htmlFor="monitizationText">
+                        Monitization Text
+                      </label>
+                      <textarea
+                        id="monitizationText"
+                        className="form-input"
+                        name="monitizationText"
+                        placeholder="We appriciate your effort..."
+                        defaultValue={displayTexts?.monitization_text ?? ""}
+                        required
+                      ></textarea>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="jumiaPickup">
+                        Jumai Pick up Location
+                      </label>
+                      <textarea
+                        id="jumiaPickup"
+                        className="form-input"
+                        name="jumiaPickup"
+                        placeholder="1, Acme Road, Ogba, Ikeja"
+                        defaultValue={displayTexts?.jumia_pickup ?? ""}
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="flex w-full justify-between flex-col sm:flex-row gap-7 ">
+                    <div className="form-group w-full">
+                      <label htmlFor="bankName">Bank Name</label>
+                      <input
+                        id="bankName"
+                        className="form-input"
+                        type="text"
+                        name="bankName"
+                        placeholder="Gtbank"
+                        defaultValue={displayTexts?.bank_name ?? ""}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="accountNumber">Account Number</label>
+                      <input
+                        id="accountNumber"
+                        type="number"
+                        className="form-input"
+                        name="accountNumber"
+                        placeholder="1234567890"
+                        defaultValue={displayTexts?.account_number ?? ""}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="accountName">Account Name</label>
+                      <input
+                        id="accountName"
+                        type="text"
+                        className="form-input"
+                        name="accountName"
+                        placeholder="Adeleye Oreoluwa"
+                        defaultValue={displayTexts?.account_name ?? ""}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn btn-success"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting
+                      ? "Saving…"
+                      : displayTexts?.id
+                        ? "✓ Update Text"
+                        : "+ Add Text"}
+                  </button>
+                </Form>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* ======================== CHECK IN TAB ======================== */}
+        {/* {activeTab === "checkin" && ( */}
+        {/* <> */}
+        {/* Stats */}
+        {/* <div className="stats-row">
               <div className="stat-card">
                 <div className="stat-value">{checkedIn}</div>
                 <div className="stat-label">Checked In</div>
@@ -833,10 +979,10 @@ export default function Admin({
                 <div className="stat-value">{totalGuests}</div>
                 <div className="stat-label">Total Guests</div>
               </div>
-            </div>
+            </div> */}
 
-            {/* Search */}
-            <div className="section-card">
+        {/* Search */}
+        {/* <div className="section-card">
               <div className="section-card-header">
                 <h2>Search Guest</h2>
               </div>
@@ -870,10 +1016,10 @@ export default function Admin({
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            {/* Search Result */}
-            {checkinSearched && (
+        {/* Search Result */}
+        {/* {checkinSearched && (
               <div className="section-card">
                 <div className="section-card-header">
                   <h2>Result</h2>
@@ -952,9 +1098,9 @@ export default function Admin({
                   )}
                 </div>
               </div>
-            )}
-          </>
-        )}
+            )} */}
+        {/* </> */}
+        {/* )} */}
       </div>
 
       {/* Confirmation Modal */}
