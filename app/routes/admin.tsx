@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { data, Form, useNavigation } from "react-router";
+import { data, Form, Link, useNavigation } from "react-router";
 import type { Route } from "./+types/admin";
 import { createClient } from "~/utils/supabase.server";
 import "../styles/admin.css";
@@ -29,7 +29,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   if (!user) {
     return data(
-      { authenticated: false as const, guests: [], gifts: [], displayTexts: null, error: null },
+      {
+        authenticated: false as const,
+        guests: [],
+        gifts: [],
+        displayTexts: null,
+        error: null,
+      },
       { headers },
     );
   }
@@ -219,20 +225,26 @@ export async function action({ request }: Route.ActionArgs) {
   if (intent === "addDisplayText") {
     const monitizationText =
       (formData.get("monitizationText") as string)?.trim() || "";
+    const gifting_guide =
+      (formData.get("giftingGuide") as string)?.trim() || "";
     const JumiaPickup = (formData.get("jumiaPickup") as string)?.trim() || "";
 
     const bankName = (formData.get("bankName") as string)?.trim();
     const accountName = (formData.get("accountName") as string)?.trim();
     const accountNumber = (formData.get("accountNumber") as string)?.trim();
-    const existingId = (formData.get("displayTextId") as string)?.trim() || null;
+    const existingId =
+      (formData.get("displayTextId") as string)?.trim() || null;
 
     const payload = {
       jumia_pickup: JumiaPickup,
+      gifting_guide: gifting_guide,
       monitization_text: monitizationText,
       bank_name: bankName,
       account_number: accountNumber,
       account_name: accountName,
     };
+
+    console.log(payload);
 
     let error;
     if (existingId) {
@@ -310,6 +322,7 @@ export default function Admin({
   const [activeTab, setActiveTab] = useState<
     "guests" | "gifts" | "displayTexts"
   >("guests");
+  const [successMsg, setSuccessMsg] = useState("");
   const [editingGuestId, setEditingGuestId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
 
@@ -318,21 +331,21 @@ export default function Admin({
   const [checkinResult, setCheckinResult] = useState<any | null>(null);
   const [checkinSearched, setCheckinSearched] = useState(false);
 
-  function searchGuest() {
-    const q = checkinQuery.trim().toLowerCase();
-    if (!q) {
-      setCheckinResult(null);
-      setCheckinSearched(false);
-      return;
-    }
-    const found = guests.find(
-      (g: any) =>
-        g.full_name.toLowerCase() === q ||
-        g.unique_code === q.replace(/\s/g, ""),
-    );
-    setCheckinResult(found || null);
-    setCheckinSearched(true);
-  }
+  // function searchGuest() {
+  //   const q = checkinQuery.trim().toLowerCase();
+  //   if (!q) {
+  //     setCheckinResult(null);
+  //     setCheckinSearched(false);
+  //     return;
+  //   }
+  //   const found = guests.find(
+  //     (g: any) =>
+  //       g.full_name.toLowerCase() === q ||
+  //       g.unique_code === q.replace(/\s/g, ""),
+  //   );
+  //   setCheckinResult(found || null);
+  //   setCheckinSearched(true);
+  // }
 
   // function resetCheckin() {
   //   setCheckinQuery("");
@@ -476,12 +489,17 @@ export default function Admin({
             <span>Guest &amp; Gift Management</span>
           </h1>
         </div>
-        <Form method="post">
-          <input type="hidden" name="_action" value="logout" />
-          <button type="submit" className="btn btn-ghost btn-sm">
-            Logout
-          </button>
-        </Form>
+        <div className="flex gap-2 items-center justify-center ">
+          <Link to="/RSVP" className="btn btn-ghost btn-sm ">
+            RSVP
+          </Link>
+          <Form method="post">
+            <input type="hidden" name="_action" value="logout" />
+            <button type="submit" className="btn btn-ghost btn-sm">
+              Logout
+            </button>
+          </Form>
+        </div>
       </header>
 
       {/* Tabs */}
@@ -508,7 +526,7 @@ export default function Admin({
             // resetCheckin();
           }}
         >
-          Dispaly Texts
+          Display Texts
         </button>
       </nav>
 
@@ -876,7 +894,11 @@ export default function Admin({
                 <Form method="post" className="add-form">
                   <input type="hidden" name="_action" value="addDisplayText" />
                   {displayTexts?.id && (
-                    <input type="hidden" name="displayTextId" value={displayTexts.id} />
+                    <input
+                      type="hidden"
+                      name="displayTextId"
+                      value={displayTexts.id}
+                    />
                   )}
                   <div className="flex w-full justify-between flex-col sm:flex-row gap-7 ">
                     <div className="form-group w-full">
@@ -889,6 +911,17 @@ export default function Admin({
                         name="monitizationText"
                         placeholder="We appriciate your effort..."
                         defaultValue={displayTexts?.monitization_text ?? ""}
+                        required
+                      ></textarea>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="giftingGuide">Gift Order Guide</label>
+                      <textarea
+                        id="giftingGuide"
+                        className="form-input"
+                        name="giftingGuide"
+                        placeholder="1, Acme Road, Ogba, Ikeja"
+                        defaultValue={displayTexts?.gifting_guide ?? ""}
                         required
                       ></textarea>
                     </div>
@@ -944,6 +977,19 @@ export default function Admin({
                       />
                     </div>
                   </div>
+
+                  {actionData?.intent === "addDisplayText" &&
+                    !actionData?.error && (
+                      <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+                        ✅ Display texts updated successfully!
+                      </div>
+                    )}
+                  {actionData?.intent === "addDisplayText" &&
+                    actionData?.error && (
+                      <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                        {actionData.error}
+                      </div>
+                    )}
 
                   <button
                     type="submit"

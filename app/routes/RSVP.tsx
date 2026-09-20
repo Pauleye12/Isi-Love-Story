@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { data, Form, useNavigation } from "react-router";
 import type { Route } from "./+types/RSVP";
 import { createClient } from "~/utils/supabase.server";
@@ -295,6 +295,8 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
   const [confirmedName, setConfirmedName] = useState<string | null>(null);
   const [selectedGifts, setSelectedGifts] = useState<Set<string>>(new Set());
   const [giftSubmitted, setGiftSubmitted] = useState(false);
+  const [showGiftConfirm, setShowGiftConfirm] = useState(false);
+  const giftFormRef = useRef<HTMLFormElement>(null);
 
   // Update confirmed name from action data
   if (
@@ -371,8 +373,11 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
             You&apos;re Invited
           </p>
           <h1 className="font-serif text-4xl font-bold text-gray-900 sm:text-5xl">
-            #TheIVLeague
+            Isi + Vic
           </h1>
+          <p className="font-serif mt-1 text-sm text-gray-900 sm:text-sm">
+            #TheIVLeague
+          </p>
           <div className="mx-auto mt-3 flex items-center justify-center gap-3">
             <span className="h-px w-12 bg-emerald-300" />
             <span className="text-lg text-emerald-600">💍</span>
@@ -461,8 +466,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                         className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                       />
                       <p className="mt-1.5 text-xs text-gray-400">
-                        Enter your name exactly as it was registered by the
-                        couple.
+                        Enter your name.
                       </p>
                     </div>
 
@@ -611,14 +615,43 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                     )}
                   </div>
 
-                  <p className="my-4 font-medium text-gray-500 text-center ">
-                    Or go ahead and Select the gift(s) you&apos;d like to give
-                    the couple, then click submit.
-                  </p>
+                  {/* <p className="my-4 font-medium text-gray-500 text-center ">
+                    Or you can go ahead and Select the gift(s) you&apos;d like
+                    to give the couple, then click submit.
+                  </p> */}
 
+                  {/* Jumia Pickup Info */}
+                  {displayTexts?.jumia_pickup && (
+                    <>
+                      <div className="rounded-xl border border-orange-200/60 bg-orange-50/40 px-5 py-4 mt-4 ">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-base">📦</span>
+                          <span className="text-xs font-semibold uppercase tracking-wider text-orange-700">
+                            Gifting Order Guide
+                          </span>
+                        </div>
+                        <p className="text-sm text-orange-800 leading-relaxed">
+                          {displayTexts.gifting_guide}
+                        </p>
+                        <p className="text-sm text-orange-800 leading-relaxed">
+                          Jumia Pickup Location: {displayTexts.jumia_pickup}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                  <DecorativeDivider />
                   <Form
                     method="post"
-                    onSubmit={() => setSelectedGifts(new Set())}
+                    ref={giftFormRef}
+                    onSubmit={(e) => {
+                      if (!showGiftConfirm) {
+                        e.preventDefault();
+                        setShowGiftConfirm(true);
+                        return;
+                      }
+                      setSelectedGifts(new Set());
+                      setShowGiftConfirm(false);
+                    }}
                   >
                     <input type="hidden" name="_action" value="selectGifts" />
                     <input
@@ -676,24 +709,6 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                         : `Submit Gift Selection (${selectedGifts.size})`}
                     </button>
                   </Form>
-
-                  {/* Jumia Pickup Info */}
-                  {displayTexts?.jumia_pickup && (
-                    <>
-                      <DecorativeDivider />
-                      <div className="rounded-xl border border-orange-200/60 bg-orange-50/40 px-5 py-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-base">📦</span>
-                          <span className="text-xs font-semibold uppercase tracking-wider text-orange-700">
-                            Jumia Pickup Location
-                          </span>
-                        </div>
-                        <p className="text-sm text-orange-800 leading-relaxed">
-                          {displayTexts.jumia_pickup}
-                        </p>
-                      </div>
-                    </>
-                  )}
                 </>
               )}
             </div>
@@ -744,6 +759,41 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
           </div>
         </footer>
       </div>
+      {/* Gift Confirmation Modal — rendered at root level for full-screen overlay */}
+      {showGiftConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+          <div className="w-full max-w-sm rounded-2xl border border-emerald-200 bg-white p-6 shadow-2xl text-center">
+            <div className="mb-3 text-4xl">🎁</div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
+              Confirm Gift Selection
+            </h3>
+            <p className="text-sm text-gray-500 mb-6">
+              Are you sure you want to gift the couple{" "}
+              <span className="font-semibold text-gray-700">
+                {selectedGifts.size} item{selectedGifts.size > 1 ? "s" : ""}
+              </span>
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setShowGiftConfirm(false)}
+                className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-50"
+              >
+                No, go back
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  giftFormRef.current?.requestSubmit();
+                }}
+                className="flex-1 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-emerald-700"
+              >
+                Yes, confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
