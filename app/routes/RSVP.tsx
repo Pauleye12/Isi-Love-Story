@@ -426,7 +426,9 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                   </h3>
                   <p className="mt-1 text-sm text-emerald-600">
                     Your availability status has been received by the couple.
+                    Event details will follow up soonest.
                   </p>
+
                   <div className="mt-3 flex items-center justify-center gap-2">
                     <FloatingHeart className="w-3 h-3 text-rose-400/60" />
                     <FloatingRing className="w-4 h-4 text-amber-400/50" />
@@ -555,7 +557,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
 
                   {/* Monetization Text from DB */}
                   {displayTexts?.monitization_text && (
-                    <div className="mb-5 rounded-xl border border-amber-200/60 bg-amber-50/50 px-5 py-4 text-center">
+                    <div className="mb-5 rounded-xl border border-amber-200/60 bg-amber-50/50 px-3 py-4 text-center">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <FloatingHeart className="w-3.5 h-3.5 text-rose-400/70" />
                         <span className="text-xs font-semibold uppercase tracking-wider text-amber-700">
@@ -591,7 +593,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                         Account Number
                       </span>
                       <div className="flex items-center gap-3 mt-0.5">
-                        <p className="text-base font-semibold text-gray-900 tracking-wide font-mono">
+                        <p className="text-sm font-semibold text-gray-900 tracking-wide font-mono">
                           {displayTexts.account_number}
                         </p>
                         {displayTexts.account_number && (
@@ -623,7 +625,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                   {/* Jumia Pickup Info */}
                   {displayTexts?.jumia_pickup && (
                     <>
-                      <div className="rounded-xl border border-orange-200/60 bg-orange-50/40 px-5 py-4 mt-4 ">
+                      <div className="rounded-xl border border-orange-200/60 bg-orange-50/40 px-3 py-4 mt-4 ">
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-base">📦</span>
                           <span className="text-xs font-semibold uppercase tracking-wider text-orange-700">
@@ -634,7 +636,8 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                           {displayTexts.gifting_guide}
                         </p>
                         <p className="text-sm text-orange-800 leading-relaxed">
-                          Jumia Pickup Location: {displayTexts.jumia_pickup}
+                          <strong>Jumia Pickup Details:</strong>
+                          {displayTexts.jumia_pickup}
                         </p>
                       </div>
                     </>
@@ -715,32 +718,11 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
           </div>
         </section>
 
-        {/* ======================== BANK DETAILS SECTION ======================== */}
-        {/* {displayTexts?.bank_name && (
-          <section className="mb-8">
-            <div className="overflow-hidden rounded-2xl border border-emerald-100 bg-white/90 backdrop-blur-sm shadow-lg shadow-emerald-100/40">
-              <div className="border-b border-emerald-50 bg-linear-to-r from-emerald-50 to-transparent px-6 py-4">
-                <h2 className="flex items-center gap-2 text-lg font-bold text-gray-900">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white">
-                    3
-                  </span>
-                  Bank Transfer
-                  <FloatingHeart className="w-4 h-4 text-rose-400/50 ml-1" />
-                </h2>
-              </div>
-
-              <div className="px-6 py-6">
-                <p className="text-sm text-gray-500 mb-5 text-center">
-                  You can also send a gift via bank transfer to the account
-                  below.
-                </p>
-              </div>
-            </div>
-          </section>
-        )} */}
-
         {/* Footer */}
         <footer className="mt-12 text-center">
+          <p className="text-sm text-gray-500 mb-5 text-center">
+            Event details will follow after RSVP confirmation
+          </p>
           <div className="flex items-center justify-center gap-2 mb-3">
             <FloatingFlower className="w-4 h-4 text-emerald-400/50" />
             <FloatingRibbon className="w-5 h-5 text-rose-400/40" />
@@ -761,7 +743,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
       </div>
       {/* Gift Confirmation Modal — rendered at root level for full-screen overlay */}
       {showGiftConfirm && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
           <div className="w-full max-w-sm rounded-2xl border border-emerald-200 bg-white p-6 shadow-2xl text-center">
             <div className="mb-3 text-4xl">🎁</div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">
