@@ -784,7 +784,7 @@ function HeroSection() {
             {/* Line 1: First name + elevated & */}
             <div className="flex items-baseline leading-none">
               <h2 className="font-editorial text-7xl md:text-8xl font-bold tracking-tight leading-none text-wedding-sage-deep drop-shadow-sm">
-                Isi
+                Isy
               </h2>
               <span className="font-editorial  italic text-3xl sm:text-4xl md:text-5xl font-light text-wedding-sage-deep/85 leading-none ml-2 sm:ml-3 self-center -translate-y-2 sm:-translate-y-3.5 select-none">
                 &
@@ -855,7 +855,7 @@ function OurPromises() {
           </div>
           <div>
             <h3 className="font-serif text-xl font-medium text-wedding-charcoal leading-tight">
-              Isi
+              Isy
             </h3>
             <span className="font-sans text-[11px] font-semibold tracking-wider uppercase text-wedding-gold-dark">
               The Bride
@@ -1318,7 +1318,7 @@ function CountdownFooter({ onReplayIntro }: { onReplayIntro: () => void }) {
         <div className="flex items-center justify-center gap-3 sm:gap-6 mb-4">
           <EnvelopeRose className="w-7 h-7 sm:w-10 sm:h-10 text-rose-300/80" />
           <h3 className="font-serif text-3xl sm:text-5xl font-normal text-white">
-            Isi & Victor
+            Isy & Victor
           </h3>
           <EnvelopeRings className="w-7 h-7 sm:w-10 sm:h-10 text-amber-300/80" />
         </div>
