@@ -141,3 +141,19 @@ body {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
 }
+
+@keyframes envelopeFloatSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
+}
+
+@keyframes envelopeFloatRev {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(8px) rotate(-3deg); }
+}
+
+@keyframes envelopeSway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+

@@ -373,7 +373,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
             You&apos;re Invited
           </p>
           <h1 className="font-serif text-4xl font-bold text-gray-900 sm:text-5xl">
-            Isi + Vic
+            Isy + Vic
           </h1>
           <p className="font-serif mt-1 text-sm text-gray-900 sm:text-sm">
             #TheIVLeague
@@ -395,6 +395,9 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
               <span>📅</span>
               <span className="font-semibold">November 28th, 2026</span>
             </div>
+            <p className="text-sm text-gray-500 mb-5 text-center">
+              Event details will follow after RSVP confirmation
+            </p>
           </div>
           <div className="mt-3 flex items-center justify-center gap-2">
             <FloatingHeart className="w-3 h-3 text-rose-300/50" />
@@ -720,9 +723,6 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
 
         {/* Footer */}
         <footer className="mt-12 text-center">
-          <p className="text-sm text-gray-500 mb-5 text-center">
-            Event details will follow after RSVP confirmation
-          </p>
           <div className="flex items-center justify-center gap-2 mb-3">
             <FloatingFlower className="w-4 h-4 text-emerald-400/50" />
             <FloatingRibbon className="w-5 h-5 text-rose-400/40" />
@@ -751,8 +751,9 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
             </h3>
             <p className="text-sm text-gray-500 mb-6">
               Are you sure you want to gift the couple{" "}
-              <span className="font-semibold text-gray-700">
-                {selectedGifts.size} item{selectedGifts.size > 1 ? "s" : ""}
+              <span className=" text-gray-500">
+                {selectedGifts.size > 1 ? "these" : "this"} item
+                {selectedGifts.size > 1 ? "s" : ""}
               </span>
             </p>
             <div className="flex gap-3">
