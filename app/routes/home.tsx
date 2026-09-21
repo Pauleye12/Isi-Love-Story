@@ -1061,7 +1061,7 @@ function TheVenue() {
                 Time
               </div>
               <div className="font-serif text-2xl font-semibold text-wedding-charcoal leading-tight mb-1">
-                2:30 PM
+                1PM
               </div>
             </div>
           </div>
