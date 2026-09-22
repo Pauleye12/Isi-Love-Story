@@ -784,7 +784,7 @@ function HeroSection() {
             {/* Line 1: First name + elevated & */}
             <div className="flex items-baseline leading-none">
               <h2 className="font-editorial text-7xl md:text-8xl font-bold tracking-tight leading-none text-wedding-sage-deep drop-shadow-sm">
-                Isy
+                Isioma
               </h2>
               <span className="font-editorial  italic text-3xl sm:text-4xl md:text-5xl font-light text-wedding-sage-deep/85 leading-none ml-2 sm:ml-3 self-center -translate-y-2 sm:-translate-y-3.5 select-none">
                 &
@@ -792,7 +792,7 @@ function HeroSection() {
             </div>
 
             {/* Line 2: Second name staggered and indented right in italic serif */}
-            <div className="flex justify-end w-full -mt-2 sm:-mt-4 pl-10 sm:pl-16 md:pl-20 leading-none">
+            <div className="flex justify-end w-full -mt-2 sm:-mt-4 pl-20 sm:pl-16 md:pl-20 leading-none">
               <h2 className="font-editorial italic text-7xl md:text-8xl font-bold tracking-tight leading-none text-wedding-sage-deep drop-shadow-sm">
                 Victor
               </h2>
@@ -855,7 +855,7 @@ function OurPromises() {
           </div>
           <div>
             <h3 className="font-serif text-xl font-medium text-wedding-charcoal leading-tight">
-              Isy
+              Isioma
             </h3>
             <span className="font-sans text-[11px] font-semibold tracking-wider uppercase text-wedding-gold-dark">
               The Bride
@@ -917,9 +917,9 @@ function OurPromises() {
    GARDEN ROMANCE (THEME & ATTIRE GUIDE)
    ═══════════════════════════════════════════════════════════ */
 const WEDDING_PALETTE = [
-  { name: "Emerald Green", hex: "#50C878" },
-  { name: "Olive Green", hex: "#808000" },
-  { name: "Peach", hex: "#FFE5B4" },
+  { name: "Emerald Green", hex: "#50C878", img: "/emeraldGreen.jpeg" },
+  { name: "Olive Green", hex: "#808000", img: "/oliveGreen.jpeg" },
+  { name: "Peach", hex: "#FFE5B4", img: "/peach.jpeg" },
 ];
 
 function GardenRomance() {
@@ -973,14 +973,20 @@ function GardenRomance() {
               onClick={() => setActiveSwatch(item.name)}
             >
               <div
-                className="w-9 h-9 rounded-full border-2 border-white shadow-[0_3px_8px_rgba(0,0,0,0.12)] transition-transform duration-300 hover:scale-115"
+                className="w-9 h-9 rounded-full border-2 shadow-[0_3px_8px_rgba(0,0,0,0.12)] transition-transform duration-300 hover:scale-115"
                 style={{
-                  backgroundColor: item.hex,
+                  borderColor: item.hex,
                   transform:
                     activeSwatch === item.name ? "scale(1.25)" : undefined,
                 }}
                 title={`${item.name} (${item.hex})`}
-              />
+              >
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className="rounded-full w-full h-full "
+                />
+              </div>
               <span className="font-sans text-xs text-wedding-text-muted font-medium">
                 {item.name}
               </span>
@@ -1318,7 +1324,7 @@ function CountdownFooter({ onReplayIntro }: { onReplayIntro: () => void }) {
         <div className="flex items-center justify-center gap-3 sm:gap-6 mb-4">
           <EnvelopeRose className="w-7 h-7 sm:w-10 sm:h-10 text-rose-300/80" />
           <h3 className="font-serif text-3xl sm:text-5xl font-normal text-white">
-            Isy & Victor
+            Isioma & Victor
           </h3>
           <EnvelopeRings className="w-7 h-7 sm:w-10 sm:h-10 text-amber-300/80" />
         </div>
