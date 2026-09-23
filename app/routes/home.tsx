@@ -541,7 +541,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
 
           <div className="flex flex-col items-center text-center text-[#5D6E66]">
             <span className="font-script italic text-5xl sm:text-7xl font-normal leading-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
-              Isy
+              Isioma
             </span>
             <span className="font-editorial italic text-2xl sm:text-3xl text-[#85988F] my-0.5 leading-none">
               &
