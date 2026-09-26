@@ -364,10 +364,11 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
       <div className="relative z-10 mx-auto max-w-2xl px-4 py-12 sm:px-6">
         {/* Header */}
         <header className="mb-10 text-center">
-          <div className="mb-3 flex items-center justify-center gap-2">
-            <FloatingFlower className="w-5 h-5 text-emerald-400/60" />
+          <div className=" flex items-center justify-center gap-2">
+            <img className="w-20" src="logo.png" alt="" />
+            {/* <FloatingFlower className="w-5 h-5 text-emerald-400/60" />
             <FloatingHeart className="w-4 h-4 text-rose-400/60" />
-            <FloatingFlower className="w-5 h-5 text-emerald-400/60" />
+            <FloatingFlower className="w-5 h-5 text-emerald-400/60" /> */}
           </div>
           <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-emerald-700">
             You&apos;re Invited
@@ -722,11 +723,12 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
         </section>
 
         {/* Footer */}
-        <footer className="mt-12 text-center">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <FloatingFlower className="w-4 h-4 text-emerald-400/50" />
+        <footer className=" text-center">
+          <div className="flex items-center justify-center gap-2">
+            <img className="w-40" src="logo.png" alt="" />
+            {/* <FloatingFlower className="w-4 h-4 text-emerald-400/50" />
             <FloatingRibbon className="w-5 h-5 text-rose-400/40" />
-            <FloatingFlower className="w-4 h-4 text-emerald-400/50" />
+            <FloatingFlower className="w-4 h-4 text-emerald-400/50" /> */}
           </div>
           <div className="mx-auto flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-emerald-200" />
@@ -735,9 +737,9 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
           </div>
           {/* <p className="mt-3 text-xs text-gray-400">With love, The Couple</p> */}
           <div className="mt-2 flex items-center justify-center gap-1.5">
-            <FloatingHeart className="w-2.5 h-2.5 text-rose-300/50" />
+            {/* <FloatingHeart className="w-2.5 h-2.5 text-rose-300/50" />
             <FloatingHeart className="w-3 h-3 text-rose-400/50" />
-            <FloatingHeart className="w-2.5 h-2.5 text-rose-300/50" />
+            <FloatingHeart className="w-2.5 h-2.5 text-rose-300/50" /> */}
           </div>
         </footer>
       </div>

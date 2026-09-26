@@ -639,11 +639,11 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
 
         {/* Convex Wax Seal Disc */}
         <div className="relative w-21.5 h-21.5 rounded-full bg-[radial-gradient(circle_at_35%_30%,#D62842_0%,#B3182F_30%,#880F21_70%,#5E0715_100%)] shadow-[inset_0_3px_6px_rgba(255,140,160,0.4),inset_0_-4px_8px_rgba(35,2,7,0.6),0_4px_15px_rgba(0,0,0,0.3)] flex items-center justify-center z-[2]">
-          <div className="w-16 h-16 rounded-full border-[1.5px] border-dashed border-[#F5BE78]/50 shadow-[inset_0_2px_4px_rgba(40,2,8,0.8),0_1px_2px_rgba(255,180,190,0.25)] flex flex-col items-center justify-center bg-[radial-gradient(circle_at_45%_45%,#7C0D1E_0%,#540612_100%)]">
+          <div className="w-16 h-16 rounded-full border-[1.5px] border-dashed border-[#F5BE78]/50 shadow-[inset_0_2px_4px_rgba(40,2,8,0.8),0_1px_2px_rgba(255,180,190,0.25)] flex flex-col items-center justify-center bg-white">
             <span className="font-display text-lg font-bold tracking-wider text-[#F8D595] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] leading-none">
-              IV
+              <img src="logo.png" alt="" />
             </span>
-            <BotanicalBranchIcon className="w-5.5 h-5.5 text-[#ECC77A] drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)] mt-0.5" />
+            {/* <BotanicalBranchIcon className="w-5.5 h-5.5 text-[#ECC77A] drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)] mt-0.5" /> */}
           </div>
         </div>
       </div>
@@ -735,9 +735,9 @@ function TopBar({ onReplayIntro }: { onReplayIntro: () => void }) {
     <header className="fixed top-0 inset-x-0 h-16 bg-wedding-cream/90 backdrop-blur-md border-b border-wedding-gold/20 flex items-center justify-between px-6 z-50 transition-all duration-300">
       <a
         href="#hero"
-        className="font-display text-sm sm:text-base tracking-widest text-wedding-sage-deep font-semibold no-underline hover:text-wedding-sage transition-colors"
+        className="font-display text-sm sm:text-base tracking-widest text-wedding-sage-deep font-semibold no-underline hover:text-wedding-sage transition-colors flex items-center justify-center "
       >
-        #TheIVLeague
+        <img className="w-15" src="logo.png" alt="" />
       </a>
       <div className="flex items-center gap-4">
         <button
@@ -776,9 +776,9 @@ function HeroSection() {
     >
       <div className="relative w-[min(88vw,420px)] aspect-[1/1.18] flex flex-col items-center justify-center mx-auto reveal-scale">
         <div className="relative z-2 p-6 flex flex-col items-center">
-          {/* <span className="font-sans text-xs font-medium tracking-[0.3em] uppercase text-wedding-sage mb-2">
-            Together with their families
-          </span> */}
+          <span className="font-display tracking-widest text-wedding-sage-deep font-semibold  mb-2">
+            #TheIVLeague
+          </span>
           {/* Typographic Lockup: First name top-left, elevated ampersand, second name tucked below on the right in italic */}
           <div className="relative inline-flex flex-col items-start select-none my-3">
             {/* Line 1: First name + elevated & */}
@@ -1092,6 +1092,49 @@ function TheVenue() {
   );
 }
 
+function RSVP() {
+  return (
+    <section
+      className="relative py-10 sm:py-16 px-6 max-w-170 mx-auto"
+      id="rsvp"
+    >
+      {/* Decorative Tree & Floral Accents */}
+
+      <div className="text-center mb-8">
+        <h2 className="font-serif text-3xl sm:text-4xl text-wedding-charcoal tracking-tight reveal reveal-delay-1">
+          RSVP
+        </h2>
+        <SectionFlourish />
+      </div>
+
+      <div className=" relative flex flex-col items-center justify-center bg-white rounded-2xl p-5 sm:p-6 mb-4 border border-wedding-gold/25 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)] transition-all duration-300 reveal reveal-left overflow-hidden  ">
+        <div className="absolute -top-4 -left-4 sm:-left-12 pointer-events-none opacity-40 sm:opacity-65">
+          <EnvelopeTree className="w-24 h-24 sm:w-36 sm:h-36 animate-[envelopeSway_8s_ease-in-out_infinite]" />
+        </div>
+        <p className="font-editorial text-lg sm:text-xl leading-relaxed text-center text-wedding-text max-w-130 mx-auto mb-9 reveal reveal-delay-2">
+          We would be delighted to celebrate our special day with you. For
+          attendance confirmations, enquiries, or any questions, please feel
+          free to reach out to:
+        </p>
+        <p>
+          {" "}
+          <strong>Chinyem:</strong> +234 701 955 1876
+        </p>
+        <p>
+          <strong>Ijeoma:</strong> +234 803 205 4265
+        </p>
+
+        <div className="absolute top-8 -right-4 sm:-right-10 pointer-events-none opacity-40 sm:opacity-75">
+          <EnvelopeFlower className="w-9 h-9 sm:w-12 sm:h-12 text-rose-300/80 animate-[envelopeFloatSlow_6s_ease-in-out_infinite]" />
+          <EnvelopeRose className="w-8 h-8 sm:w-10 sm:h-10 text-rose-400/70 -mt-1 ml-2 animate-[envelopeFloatRev_5s_ease-in-out_infinite]" />
+        </div>
+      </div>
+
+      {/* RSVP Contact */}
+    </section>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════
    REGISTRY SECTION
    ═══════════════════════════════════════════════════════════ */
@@ -1240,7 +1283,7 @@ function CountdownFooter({ onReplayIntro }: { onReplayIntro: () => void }) {
 
   return (
     <footer
-      className="relative bg-linear-to-b from-wedding-sage-deep to-[#243026] text-white py-20 px-6 text-center overflow-hidden before:content-[''] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_20%,rgba(224,200,126,0.15)_0%,transparent_60%)] before:pointer-events-none"
+      className="relative bg-linear-to-b from-wedding-sage-deep to-[#243026] text-white py-20 pb-5 px-6 text-center overflow-hidden before:content-[''] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_20%,rgba(224,200,126,0.15)_0%,transparent_60%)] before:pointer-events-none"
       id="countdown"
     >
       {/* Decorative Wedding Trees in Footer Corners */}
@@ -1328,7 +1371,7 @@ function CountdownFooter({ onReplayIntro }: { onReplayIntro: () => void }) {
           </h3>
           <EnvelopeRings className="w-7 h-7 sm:w-10 sm:h-10 text-amber-300/80" />
         </div>
-        <p className="font-editorial italic text-lg sm:text-xl leading-relaxed text-white/85 max-w-110 mx-auto mb-9">
+        <p className="font-editorial italic text-lg sm:text-xl leading-relaxed text-white/85 max-w-110 mx-auto ">
           Thank you for being part of our story. We cannot wait to share this
           magical day with our favorite people.
         </p>
@@ -1344,8 +1387,11 @@ function CountdownFooter({ onReplayIntro }: { onReplayIntro: () => void }) {
           <span>Replay Invitation Opener</span>
         </button>
       </div> */}
+      <div className="w-full flex justify-center items-center ">
+        <img className="w-60" src="logo.png" alt="" />
+      </div>
 
-      <div className="flex items-center justify-center gap-4 mb-8 reveal reveal-delay-3">
+      {/* <div className="flex items-center justify-center gap-4 mb-8 reveal reveal-delay-3">
         <a
           href="#"
           className="w-9.5 h-9.5 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:bg-white/15 hover:text-white hover:border-wedding-gold-light hover:scale-110 transition-all duration-300 no-underline"
@@ -1367,7 +1413,7 @@ function CountdownFooter({ onReplayIntro }: { onReplayIntro: () => void }) {
         >
           💌
         </a>
-      </div>
+      </div> */}
     </footer>
   );
 }
@@ -1417,6 +1463,7 @@ export default function Home() {
         <OurPromises />
         <GardenRomance />
         <TheVenue />
+        <RSVP />
         <Registry />
         <CountdownFooter onReplayIntro={handleReplayIntro} />
       </div>
