@@ -5,21 +5,21 @@
 
 /* ---------- CSS Custom Properties ---------- */
 :root {
-  --wedding-cream: #faf7f2;
-  --wedding-cream-warm: #f4efe6;
-  --wedding-ivory: #fffdf9;
+  --wedding-cream: #FAEEC8;
+  --wedding-cream-warm: #F0E2B6;
+  --wedding-ivory: #FDF6E0;
   --wedding-sage: #5d7263;
   --wedding-sage-light: #8b9d83;
   --wedding-sage-deep: #38483b;
   --wedding-sage-dark: #2a362d;
-  --wedding-gold: #c5a55a;
-  --wedding-gold-light: #e0c87e;
-  --wedding-gold-dark: #9e7d32;
+  --wedding-gold: #B8953F;
+  --wedding-gold-light: #D4B565;
+  --wedding-gold-dark: #8C6B22;
   --wedding-rose: #d9a098;
-  --wedding-blush: #f7eae5;
+  --wedding-blush: #F5E2CC;
   --wedding-charcoal: #262626;
-  --wedding-text: #4f4f4f;
-  --wedding-text-muted: #7e7e7e;
+  --wedding-text: #4A4536;
+  --wedding-text-muted: #77705E;
   --wedding-white: #ffffff;
 
   /* Red Wax Palette */

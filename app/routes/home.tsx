@@ -531,7 +531,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
           <EnvelopeFlower className="w-6 h-6 sm:w-8 sm:h-8 text-rose-300/75" />
         </div>
 
-        <p className="font-editorial italic text-3xl sm:text-5xl mb-3 sm:mb-4 text-[#5D6E66] tracking-wide">
+        <p className="font-editorial italic text-3xl font-medium sm:text-5xl mb-3 sm:mb-4 text-[#5D6E66] tracking-wide">
           #TheIVLeague
         </p>
 
@@ -544,13 +544,13 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
           </div>
 
           <div className="flex flex-col items-center text-center text-[#5D6E66]">
-            <span className="font-script italic text-5xl sm:text-7xl font-normal leading-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
+            <span className="font-script italic text-5xl sm:text-7xl font-medium tracking-wider leading-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
               Isioma
             </span>
-            <span className="font-editorial italic text-2xl sm:text-3xl text-[#85988F] my-0.5 leading-none">
+            <span className="font-editorial font-medium tracking-wider italic text-2xl sm:text-3xl text-[#85988F] my-0.5 leading-none">
               &
             </span>
-            <span className="font-script italic text-5xl sm:text-7xl font-normal leading-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
+            <span className="font-script italic text-5xl sm:text-7xl font-medium tracking-wider leading-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
               Victor
             </span>
           </div>
@@ -866,7 +866,7 @@ function OurPromises() {
 
       <div className="text-center mb-8">
         <h2 className="font-serif text-3xl sm:text-4xl text-wedding-charcoal tracking-tight reveal">
-          Meet The Couples
+          Meet The Couple
         </h2>
         <SectionFlourish />
       </div>
@@ -1173,7 +1173,7 @@ function RSVP() {
           <EnvelopeTree className="w-24 h-24 sm:w-36 sm:h-36 animate-[envelopeSway_8s_ease-in-out_infinite]" />
         </div>
         <p className="font-editorial text-lg sm:text-xl leading-relaxed text-center text-wedding-text max-w-130 mx-auto mb-9 reveal reveal-delay-2">
-          For enquiries please feel free to reach out to:
+          For enquiries, please feel free to reach out to:
         </p>
         <p>
           {" "}
@@ -1233,9 +1233,9 @@ function Registry() {
       </div>
 
       <p className="font-editorial text-lg sm:text-xl leading-relaxed text-center text-wedding-text max-w-120 mx-auto mb-9 reveal reveal-delay-1">
-        Due to logistics constraints, we would preferred gifts are monetized. If
-        you would prefer the traditional gifting, please see gifting options in
-        the RSVP and Gift Registry below
+        Due to logistics constraints, a monetary gift would be greatly
+        appreciated. However, if you prefer the traditional gifting, please see
+        gifting options in the RSVP and Gift Registry below
       </p>
 
       {/* Honeymoon Fund */}
@@ -1431,7 +1431,7 @@ function CountdownFooter({ onReplayIntro }: { onReplayIntro: () => void }) {
           <EnvelopeRings className="w-7 h-7 sm:w-10 sm:h-10 text-amber-300/80" />
         </div>
         <p className="font-editorial italic text-lg sm:text-xl leading-relaxed text-white/85 max-w-110 mx-auto ">
-          Thank you for being part of our story. We cannot wait to share this
+          Thank you for being a part of our story. We cannot wait to share this
           magical day with our favorite people.
         </p>
       </div>
