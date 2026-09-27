@@ -12,6 +12,10 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+export const links: Route.LinksFunction = () => [
+  { rel: "preload", as: "image", href: "/couple1.jpg" },
+];
+
 /* ─────────────────── WEDDING TARGET DATE ─────────────────── */
 const WEDDING_TARGET_DATE = new Date("2026-11-28T16:30:00");
 
@@ -774,35 +778,48 @@ function HeroSection() {
       className="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-6 py-12 overflow-hidden"
       id="hero"
     >
-      <div className="relative w-[min(88vw,420px)] aspect-[1/1.18] flex flex-col items-center justify-center mx-auto reveal-scale">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/couple1.jpg"
+          alt="Isioma & Victor"
+          className="w-full h-full object-cover object-top"
+        />
+        {/* Overlay gradient for text readability */}
+        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/60 to-black/40" />
+      </div>
+
+      <div className="relative z-10 w-[min(88vw,420px)] aspect-[1/1.18] flex flex-col items-center justify-center mx-auto reveal-scale">
         <div className="relative z-2 p-6 flex flex-col items-center">
-          <span className="font-display tracking-widest text-wedding-sage-deep font-semibold  mb-2">
+          <span className="font-display tracking-widest text-wedding-rose font-semibold  mb-2">
             #TheIVLeague
           </span>
           {/* Typographic Lockup: First name top-left, elevated ampersand, second name tucked below on the right in italic */}
           <div className="relative inline-flex flex-col items-start select-none my-3">
             {/* Line 1: First name + elevated & */}
             <div className="flex items-baseline leading-none">
-              <h2 className="font-editorial text-7xl md:text-8xl font-bold tracking-tight leading-none text-wedding-sage-deep drop-shadow-sm">
+              <h2 className="font-editorial text-7xl md:text-8xl font-bold tracking-tight leading-none text-wedding-rose drop-shadow-sm">
                 Isioma
               </h2>
-              <span className="font-editorial  italic text-3xl sm:text-4xl md:text-5xl font-light text-wedding-sage-deep/85 leading-none ml-2 sm:ml-3 self-center -translate-y-2 sm:-translate-y-3.5 select-none">
+              <span className="font-editorial  italic text-3xl sm:text-4xl md:text-5xl font-light text-wedding-rose/85 leading-none ml-2 sm:ml-3 self-center -translate-y-2 sm:-translate-y-3.5 select-none">
                 &
               </span>
             </div>
 
             {/* Line 2: Second name staggered and indented right in italic serif */}
             <div className="flex justify-end w-full -mt-2 sm:-mt-4 pl-20 sm:pl-16 md:pl-20 leading-none">
-              <h2 className="font-editorial italic text-7xl md:text-8xl font-bold tracking-tight leading-none text-wedding-sage-deep drop-shadow-sm">
+              <h2 className="font-editorial italic text-7xl md:text-8xl font-bold tracking-tight leading-none text-wedding-rose drop-shadow-sm">
                 Victor
               </h2>
             </div>
           </div>
-          <p className="font-semibold">November 28th, 2026</p>
+          <p className="font-semibold text-wedding-rose ">
+            November 28th, 2026
+          </p>
 
           <button
             type="button"
-            className="mt-7 inline-flex items-center gap-2 px-9 py-3 font-display text-xs font-semibold tracking-[0.25em] uppercase text-wedding-sage-deep bg-transparent border-1.5 border-wedding-sage-deep rounded cursor-pointer transition-all duration-300 hover:bg-wedding-sage-deep hover:text-white hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(56,72,59,0.25)]"
+            className="mt-7 inline-flex items-center gap-2 px-9 py-3 font-display text-xs font-semibold tracking-[0.25em] uppercase text-wedding-rose bg-transparent border-1.5 border-wedding-rose rounded cursor-pointer transition-all duration-300 hover:bg-wedding-sage-deep hover:text-white hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(56,72,59,0.25)]"
             onClick={scrollToExplore}
           >
             Explore
@@ -834,20 +851,20 @@ function OurPromises() {
 
       <div className="text-center mb-8">
         <h2 className="font-serif text-3xl sm:text-4xl text-wedding-charcoal tracking-tight reveal">
-          Our Promises
+          Meet The Couples
         </h2>
         <SectionFlourish />
       </div>
 
       {/* Bride Vow Card */}
-      <div className="relative bg-white rounded-2xl p-6 sm:p-8 mb-6 border border-wedding-gold/25 shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-linear-to-b before:from-wedding-gold before:to-wedding-rose reveal reveal-left">
-        {/* Floating Rose & Heart inside card */}
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 pointer-events-none flex items-center gap-1.5 opacity-60 sm:opacity-85">
+      {/* <div className="relative bg-white rounded-2xl p-6 sm:p-8 mb-6 border border-wedding-gold/25 shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-linear-to-b before:from-wedding-gold before:to-wedding-rose reveal reveal-left"> */}
+      {/* Floating Rose & Heart inside card */}
+      {/* <div className="absolute top-4 right-4 sm:top-6 sm:right-6 pointer-events-none flex items-center gap-1.5 opacity-60 sm:opacity-85">
           <EnvelopeRose className="w-8 h-8 sm:w-10 sm:h-10 text-rose-400/70" />
           <EnvelopeHeart className="w-6 h-6 sm:w-7 sm:h-7 text-rose-300/70" />
-        </div>
+        </div> */}
 
-        <div className="flex items-center gap-4 mb-4">
+      {/* <div className="flex items-center gap-4 mb-4">
           <div className="relative">
             <div className="w-13 h-13 rounded-full bg-linear-to-br from-wedding-blush to-[#F0D5CD] flex items-center justify-center font-script text-2xl text-wedding-sage-deep border-2 border-white shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
               I
@@ -861,16 +878,16 @@ function OurPromises() {
               The Bride
             </span>
           </div>
-        </div>
-        <p className="font-editorial italic text-lg leading-relaxed text-wedding-text relative">
+        </div> */}
+      {/* <p className="font-editorial italic text-lg leading-relaxed text-wedding-text relative">
           <span className="font-serif text-4xl leading-none -align-[0.4rem] text-wedding-gold-light mr-1">
             “
           </span>
           I promise to cultivate a life filled with quiet mornings, slow
           laughter, and constant curiosity. Standing by you, I find my greatest
           peace and endless joy.
-        </p>
-      </div>
+        </p> */}
+      {/* </div> */}
 
       {/* Groom Vow Card */}
       <div className="relative bg-white rounded-2xl p-6 sm:p-8 mb-6 border border-wedding-gold/25 shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-linear-to-b before:from-wedding-sage before:to-wedding-sage-deep reveal reveal-right">
@@ -882,27 +899,32 @@ function OurPromises() {
 
         <div className="flex items-center gap-4 mb-4">
           <div className="relative">
-            <div className="w-13 h-13 rounded-full bg-linear-to-br from-wedding-sage-light to-wedding-sage-deep flex items-center justify-center font-script text-2xl text-white border-2 border-white shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
-              V
+            <div className="w-13 h-13 rounded-full bg-linear-to-br from-wedding-blush to-[#F0D5CD] flex items-center justify-center font-script text-2xl text-wedding-sage-deep border-2 border-white shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
+              <img src="logo.png" alt="" />
             </div>
           </div>
-          <div>
+          {/* <div>
             <h3 className="font-serif text-xl font-medium text-wedding-charcoal leading-tight">
               Victor
             </h3>
             <span className="font-sans text-[11px] font-semibold tracking-wider uppercase text-wedding-gold-dark">
               The Groom
             </span>
-          </div>
+          </div> */}
         </div>
         <p className="font-editorial italic text-lg leading-relaxed text-wedding-text relative">
           <span className="font-serif text-4xl leading-none -align-[0.4rem] text-wedding-gold-light mr-1">
             “
           </span>
-          I promise to honor your dreams as if they were my own, to listen with
-          devotion, and to love you more deeply through every unfolding season
-          of our journey together.
+          What started as a contact exchange at a mutual friend's wedding has
+          grown into a love we're excited to celebrate with the people who
+          matter most to us. On Nov 28, we take off on a forever journey and
+          invite you to share in our joy as we celebrate the blending of our
+          families and traditions. Thank you for your love, prayers and support;
+          we can't wait to celebrate with you!
         </p>
+        <p className="mt-3">With Love,</p>
+        <p className="font-serif text-lg font-semibold ">Isioma & Victor</p>
       </div>
 
       {/* Tree Anchor at Bottom Corner */}
@@ -923,8 +945,6 @@ const WEDDING_PALETTE = [
 ];
 
 function GardenRomance() {
-  const [activeSwatch, setActiveSwatch] = useState<string | null>(null);
-
   return (
     <section
       className="relative py-16 sm:py-20 px-6 max-w-170 mx-auto"
@@ -941,58 +961,84 @@ function GardenRomance() {
 
       <div className="text-center mb-8">
         <h2 className="font-serif text-3xl sm:text-4xl text-wedding-charcoal tracking-tight reveal reveal-delay-1">
-          Theme & Attire Guide
+          Colors of the Day
         </h2>
         <SectionFlourish />
       </div>
 
-      <p className="font-editorial text-lg sm:text-xl leading-relaxed text-center text-wedding-text max-w-130 mx-auto mb-9 reveal reveal-delay-2">
+      {/* <p className="font-editorial text-lg sm:text-xl leading-relaxed text-center text-wedding-text max-w-130 mx-auto mb-9 reveal reveal-delay-2">
         We invite you to celebrate with us in elegant pastel tones, flowing
         materials, and midsummer romance. Our ceremony and celebration will take
         place outdoors amidst lush vineyard groves and sunset grassy slopes.
-      </p>
+      </p> */}
 
-      {/* Wedding Palette */}
-      <div className="relative bg-white rounded-2xl p-6 sm:p-7 border border-wedding-gold/30 shadow-[0_4px_15px_rgba(0,0,0,0.03)] text-center reveal reveal-scale overflow-hidden">
-        {/* Subtle corner decorations in palette card */}
-        <div className="absolute top-3 left-3 pointer-events-none opacity-50">
-          <EnvelopeFlower className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-500/60" />
-        </div>
-        <div className="absolute top-3 right-3 pointer-events-none opacity-50">
-          <EnvelopeHeart className="w-6 h-6 sm:w-7 sm:h-7 text-rose-400/60" />
-        </div>
+      {/* Wedding Palette — Individual Cards */}
+      <div className="flex flex-col gap-5">
+        {WEDDING_PALETTE.map((item, index) => (
+          <div
+            key={item.name}
+            className={`relative bg-white rounded-2xl p-5 sm:p-6 border border-wedding-gold/25 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden reveal ${
+              index % 2 === 0 ? "reveal-left" : "reveal-right"
+            }`}
+          >
+            {/* Decorative corner accents */}
+            <div className="absolute top-3 right-3 pointer-events-none opacity-40">
+              {index === 0 && (
+                <EnvelopeFlower className="w-7 h-7 sm:w-9 sm:h-9 text-emerald-500/70" />
+              )}
+              {index === 1 && (
+                <EnvelopeRose className="w-7 h-7 sm:w-9 sm:h-9 text-emerald-600/60" />
+              )}
+              {index === 2 && (
+                <EnvelopeHeart className="w-7 h-7 sm:w-9 sm:h-9 text-rose-400/60" />
+              )}
+            </div>
 
-        <div className="font-sans text-xs font-semibold tracking-[0.2em] uppercase text-wedding-text-muted mb-5">
-          Our Wedding Palette
-        </div>
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          {WEDDING_PALETTE.map((item) => (
+            {/* Color accent bar on left */}
             <div
-              key={item.name}
-              className="flex flex-col items-center gap-1.5 cursor-pointer"
-              onClick={() => setActiveSwatch(item.name)}
-            >
+              className="absolute top-0 left-0 w-1 h-full rounded-l-2xl"
+              style={{ backgroundColor: item.hex }}
+            />
+
+            <div className="flex flex-col items-center gap-5">
+              {/* Large color swatch image */}
               <div
-                className="w-9 h-9 rounded-full border-2 shadow-[0_3px_8px_rgba(0,0,0,0.12)] transition-transform duration-300 hover:scale-115"
-                style={{
-                  borderColor: item.hex,
-                  transform:
-                    activeSwatch === item.name ? "scale(1.25)" : undefined,
-                }}
-                title={`${item.name} (${item.hex})`}
+                className="shrink-0 w-30 h-30 sm:w-24 sm:h-24 rounded-xl border-2 shadow-[0_4px_12px_rgba(0,0,0,0.1)] overflow-hidden"
+                style={{ borderColor: item.hex }}
               >
                 <img
                   src={item.img}
                   alt={item.name}
-                  className="rounded-full w-full h-full "
+                  className="w-full h-full object-cover"
                 />
               </div>
-              <span className="font-sans text-xs text-wedding-text-muted font-medium">
-                {item.name}
-              </span>
+
+              {/* Color details */}
+              <div className="flex flex-col gap-1.5">
+                <h3
+                  className="font-serif text-xl sm:text-2xl font-semibold text-wedding-charcoal leading-tight"
+                  style={{ color: item.hex }}
+                >
+                  {item.name}
+                </h3>
+                {/* <span
+                  className="inline-flex items-center gap-1.5 w-fit px-3 py-1 rounded-full text-[11px] font-sans font-semibold tracking-wider uppercase border"
+                  style={{
+                    color: item.hex,
+                    borderColor: `${item.hex}40`,
+                    backgroundColor: `${item.hex}10`,
+                  }}
+                >
+                  <span
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{ backgroundColor: item.hex }}
+                  />
+                  {item.hex}
+                </span> */}
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -1102,7 +1148,7 @@ function RSVP() {
 
       <div className="text-center mb-8">
         <h2 className="font-serif text-3xl sm:text-4xl text-wedding-charcoal tracking-tight reveal reveal-delay-1">
-          RSVP
+          Event Contact
         </h2>
         <SectionFlourish />
       </div>
@@ -1112,9 +1158,7 @@ function RSVP() {
           <EnvelopeTree className="w-24 h-24 sm:w-36 sm:h-36 animate-[envelopeSway_8s_ease-in-out_infinite]" />
         </div>
         <p className="font-editorial text-lg sm:text-xl leading-relaxed text-center text-wedding-text max-w-130 mx-auto mb-9 reveal reveal-delay-2">
-          We would be delighted to celebrate our special day with you. For
-          attendance confirmations, enquiries, or any questions, please feel
-          free to reach out to:
+          For enquiries please feel free to reach out to:
         </p>
         <p>
           {" "}
@@ -1168,15 +1212,15 @@ function Registry() {
 
       <div className="text-center mb-8">
         <h2 className="font-serif text-3xl sm:text-4xl text-wedding-charcoal tracking-tight reveal">
-          Registry
+          RSVP and Gifting
         </h2>
         <SectionFlourish />
       </div>
 
       <p className="font-editorial text-lg sm:text-xl leading-relaxed text-center text-wedding-text max-w-120 mx-auto mb-9 reveal reveal-delay-1">
-        Your presence at our celebration is the greatest gift of all. If you
-        would like to honor us with a gift, we have registered with the options
-        below.
+        Due to logistics constraints, we would preferred gifts are monetized. If
+        you would prefer the traditional gifting, please see gifting options in
+        the RSVP and Gift Registry below
       </p>
 
       {/* Honeymoon Fund */}
@@ -1261,7 +1305,7 @@ function Registry() {
             🎁
           </div>
           <span className="font-serif text-lg font-medium text-wedding-charcoal">
-            Gift Registry
+            RSVP and Gift Registry
           </span>
         </div>
         <a
