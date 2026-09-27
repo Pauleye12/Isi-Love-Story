@@ -732,7 +732,7 @@ function TopBar({ onReplayIntro }: { onReplayIntro: () => void }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 150);
     };
 
     handleScroll();
