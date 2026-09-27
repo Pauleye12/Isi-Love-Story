@@ -619,11 +619,10 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
 
       {/* ── Melted Red Wax Seal with Drips & Monogram at (50%, 58%) ── */}
       <div
-        className="absolute top-[62%] left-[60%] -translate-x-1/2 -translate-y-1/2 z-25 cursor-grab active:cursor-grabbing touch-none select-none flex flex-col items-center"
+        className="absolute top-[58%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-25 cursor-grab active:cursor-grabbing touch-none select-none flex flex-col items-center animate-bounce "
         style={sealTransformStyle}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        onClick={triggerOpen}
         role="button"
         tabIndex={0}
         aria-label="Slide up on the red wax seal to open wedding invitation"
@@ -642,7 +641,9 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
         <div className="absolute -inset-3.5 rounded-full bg-[radial-gradient(circle,rgba(230,57,86,0.35)_0%,transparent_70%)] animate-[sealPulse_2s_ease-in-out_infinite] pointer-events-none" />
 
         {/* Convex Wax Seal Disc */}
-        <div className="relative w-21.5 h-21.5 rounded-full bg-[radial-gradient(circle_at_35%_30%,#D62842_0%,#B3182F_30%,#880F21_70%,#5E0715_100%)] shadow-[inset_0_3px_6px_rgba(255,140,160,0.4),inset_0_-4px_8px_rgba(35,2,7,0.6),0_4px_15px_rgba(0,0,0,0.3)] flex items-center justify-center z-[2]">
+        <div
+          className={`relative w-21.5 h-21.5 rounded-full bg-[radial-gradient(circle_at_35%_30%,#D62842_0%,#B3182F_30%,#880F21_70%,#5E0715_100%)] shadow-[inset_0_3px_6px_rgba(255,140,160,0.4),inset_0_-4px_8px_rgba(35,2,7,0.6),0_4px_15px_rgba(0,0,0,0.3)] flex items-center justify-center z-[2] ${openingPhase === "idle" && dragOffset === 0 ? "animate-[sealBounce_2.5s_ease-in-out_infinite]" : ""}`}
+        >
           <div className="w-16 h-16 rounded-full border-[1.5px] border-dashed border-[#F5BE78]/50 shadow-[inset_0_2px_4px_rgba(40,2,8,0.8),0_1px_2px_rgba(255,180,190,0.25)] flex flex-col items-center justify-center bg-white">
             <span className="font-display text-lg font-bold tracking-wider text-[#F8D595] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] leading-none">
               <img src="logo.png" alt="" />
@@ -653,7 +654,8 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
       </div>
 
       {/* Bottom CTA Text: "We have some news..." & "TAP HERE & SLIDE ›" */}
-      <div className="absolute bottom-20 sm:bottom-14 inset-x-0 text-center z-15 flex flex-col items-center gap-2 pointer-events-none">
+
+      <div className="absolute w-full bottom-20 sm:bottom-14 inset-x-0 text-center z-15 flex flex-col items-center gap-2 pointer-events-none">
         <div className="flex items-center justify-center gap-3">
           <EnvelopeHeart className="w-6 h-6 sm:w-8 sm:h-8 text-rose-300/70 animate-[envelopeFloatSlow_5s_ease-in-out_infinite]" />
           <p className="font-editorial italic text-lg sm:text-xl text-[#727A75] m-0">
@@ -661,10 +663,6 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
           </p>
           <EnvelopeFlower className="w-6 h-6 sm:w-8 sm:h-8 text-rose-300/70 animate-[envelopeFloatRev_5s_ease-in-out_infinite]" />
         </div>
-        <p className="font-sans text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-[#88928D] m-0 flex items-center gap-1.5 animate-[slideHintPulse_2s_ease-in-out_infinite]">
-          <span>TAP HERE & SLIDE</span>
-          <span>›</span>
-        </p>
       </div>
     </aside>
   );
@@ -730,13 +728,30 @@ function FloatingPetalsDecor() {
    ═══════════════════════════════════════════════════════════ */
 function TopBar({ onReplayIntro }: { onReplayIntro: () => void }) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMusic = () => {
     setIsPlaying(!isPlaying);
   };
 
   return (
-    <header className="fixed top-0 inset-x-0 h-16 bg-wedding-cream/90 backdrop-blur-md border-b border-wedding-gold/20 flex items-center justify-between px-6 z-50 transition-all duration-300">
+    <header
+      className={`fixed top-0 inset-x-0 h-16 flex items-center justify-between px-6 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-wedding-cream/90 backdrop-blur-md border-b border-wedding-gold/20 shadow-sm"
+          : "bg-transparent border-b border-transparent"
+      }`}
+    >
       <a
         href="#hero"
         className="font-display text-sm sm:text-base tracking-widest text-wedding-sage-deep font-semibold no-underline hover:text-wedding-sage transition-colors flex items-center justify-center "
@@ -775,7 +790,7 @@ function HeroSection() {
 
   return (
     <section
-      className="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-6 py-12 overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-12 overflow-hidden"
       id="hero"
     >
       {/* Background Image */}
@@ -786,7 +801,7 @@ function HeroSection() {
           className="w-full h-full object-cover object-top"
         />
         {/* Overlay gradient for text readability */}
-        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/60 to-black/40" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/40 to-black/40" />
       </div>
 
       <div className="relative z-10 w-[min(88vw,420px)] aspect-[1/1.18] flex flex-col items-center justify-center mx-auto reveal-scale">
@@ -1467,12 +1482,33 @@ function CountdownFooter({ onReplayIntro }: { onReplayIntro: () => void }) {
    ═══════════════════════════════════════════════════════════ */
 export default function Home() {
   const [envelopeOpened, setEnvelopeOpened] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const contentRef = useIntersectionReveal();
 
   const handleOpenEnvelope = useCallback(() => {
     setEnvelopeOpened(true);
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "instant" });
+    }
+    // Start background audio on envelope open
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = 0;
+      audio
+        .play()
+        .then(() => {
+          // Fade in over 2 seconds
+          let vol = 0;
+          const fadeIn = setInterval(() => {
+            vol = Math.min(vol + 0.02, 0.2);
+            audio.volume = vol;
+            if (vol >= 0.2) clearInterval(fadeIn);
+          }, 100);
+        })
+        .catch(() => {
+          // Autoplay blocked — user can unmute via button
+        });
     }
   }, []);
 
@@ -1481,10 +1517,35 @@ export default function Home() {
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "instant" });
     }
+    // Pause and reset audio on replay
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
   }, []);
+
+  const toggleMute = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isMuted) {
+      audio.muted = false;
+      // If audio was never started (autoplay blocked), try playing
+      if (audio.paused && envelopeOpened) {
+        audio.volume = 0.2;
+        audio.play().catch(() => {});
+      }
+    } else {
+      audio.muted = true;
+    }
+    setIsMuted(!isMuted);
+  }, [isMuted, envelopeOpened]);
 
   return (
     <main className="relative w-full min-h-screen bg-wedding-cream text-wedding-charcoal font-editorial overflow-x-hidden antialiased">
+      {/* Background Audio */}
+      <audio ref={audioRef} src="/bgAudio.mp3" loop preload="auto" />
+
       {/* Floating Blossom Petals and Stardust in Background */}
       <FloatingPetalsDecor />
 
@@ -1494,10 +1555,58 @@ export default function Home() {
       {/* Top Floating App Bar */}
       {envelopeOpened && <TopBar onReplayIntro={handleReplayIntro} />}
 
+      {/* Floating Mute/Unmute Button */}
+      {envelopeOpened && (
+        <button
+          type="button"
+          onClick={toggleMute}
+          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border border-wedding-gold/30 shadow-[0_4px_20px_rgba(0,0,0,0.1)] flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_6px_25px_rgba(0,0,0,0.15)]"
+          aria-label={
+            isMuted ? "Unmute background music" : "Mute background music"
+          }
+          title={isMuted ? "Unmute music" : "Mute music"}
+        >
+          {isMuted ? (
+            <svg
+              className="w-5 h-5 text-wedding-sage-deep"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="w-5 h-5 text-wedding-sage-deep"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+              />
+            </svg>
+          )}
+        </button>
+      )}
+
       {/* Main Wedding Story & Event Details */}
       <div
         ref={contentRef}
-        className={`pt-16 transition-all duration-1000 ase-in-out delay-200 ${
+        className={` transition-all duration-1000 ease-in-out delay-200 ${
           envelopeOpened
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-8"

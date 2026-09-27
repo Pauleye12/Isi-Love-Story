@@ -226,7 +226,7 @@
 }
 
 .fullscreen-flap-names .flap-name {
-  font-family: var(--font-script), 'Cormorant Garamond', Georgia, cursive;
+  font-family: var(--font-script), "Cormorant Garamond", Georgia, cursive;
   font-size: clamp(3.2rem, 11vw, 5.2rem);
   font-style: italic;
   font-weight: 400;
@@ -294,7 +294,8 @@
 }
 
 @keyframes slideHintPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
     opacity: 0.75;
   }
@@ -321,8 +322,13 @@
 }
 
 @keyframes playFade {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* ============================================================
