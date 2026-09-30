@@ -483,7 +483,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
   return (
     <aside
       aria-label="Wedding Invitation Envelope"
-      className={`fixed inset-0 w-screen h-screen z-9999 bg-[#FCFBFA] overflow-hidden flex flex-col justify-between select-none transition-all duration-950ms ease-[cubic-bezier(0.7,0,0.2,1)] ${
+      className={`fixed inset-0 w-screen h-screen z-9999 bg-[#FDF6E0] overflow-hidden flex flex-col justify-between select-none transition-all duration-950ms ease-[cubic-bezier(0.7,0,0.2,1)] ${
         openingPhase === "opened"
           ? "-translate-y-full opacity-0 pointer-events-none"
           : ""
@@ -520,7 +520,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
 
       {/* ── Fullscreen Envelope Top Triangular Flap with Couple Names Written on It ── */}
       <div
-        className={`absolute top-0 inset-x-0 h-[58%] bg-linear-to-b from-white via-[#FBF9F6] to-[#F4EDE4] [clip-path:polygon(0_0,100%_0,100%_64%,50%_100%,0_64%)] drop-shadow-[0_10px_24px_rgba(45,35,25,0.08)] flex flex-col items-center justify-start pt-32 sm:pt-16 z-10 origin-top transition-transform duration-850 ease-in-out ${
+        className={`absolute top-0 inset-x-0 h-[58%] bg-linear-to-b from-[#FDF8EC] via-[#FAF0D4] to-[#F0E2B6] [clip-path:polygon(0_0,100%_0,100%_64%,50%_100%,0_64%)] drop-shadow-[0_10px_24px_rgba(140,107,34,0.1)] flex flex-col items-center justify-start pt-32 sm:pt-16 z-10 origin-top transition-transform duration-850 ease-in-out ${
           openingPhase === "opening" ? "transform-[rotateX(180deg)]" : ""
         }`}
       >
@@ -531,7 +531,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
           <EnvelopeFlower className="w-6 h-6 sm:w-8 sm:h-8 text-rose-300/75" />
         </div>
 
-        <p className="font-editorial italic text-3xl font-medium sm:text-5xl mb-3 sm:mb-4 text-[#5D6E66] tracking-wide">
+        <p className="font-editorial italic text-3xl font-medium sm:text-5xl mb-3 sm:mb-4 text-[#8C6B22] tracking-wide">
           #TheIVLeague
         </p>
 
@@ -543,11 +543,11 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
             <EnvelopeFlower className="w-7 h-7 sm:w-9 sm:h-9 text-rose-300/80 -mt-1" />
           </div>
 
-          <div className="flex flex-col items-center text-center text-[#5D6E66]">
+          <div className="flex flex-col items-center text-center text-[#8C6B22]">
             <span className="font-script italic text-5xl sm:text-7xl font-medium tracking-wider leading-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
               Isioma
             </span>
-            <span className="font-editorial font-medium tracking-wider italic text-2xl sm:text-3xl text-[#85988F] my-0.5 leading-none">
+            <span className="font-editorial font-medium tracking-wider italic text-2xl sm:text-3xl text-[#B8953F] my-0.5 leading-none">
               &
             </span>
             <span className="font-script italic text-5xl sm:text-7xl font-medium tracking-wider leading-none drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
@@ -586,7 +586,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
             y1="37"
             x2="50"
             y2="58"
-            stroke="#E6E0D5"
+            stroke="#E0D098"
             strokeWidth="0.5"
           />
           <line
@@ -594,7 +594,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
             y1="37"
             x2="50"
             y2="58"
-            stroke="#E6E0D5"
+            stroke="#E0D098"
             strokeWidth="0.5"
           />
           {/* Bottom diagonal creases */}
@@ -603,7 +603,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
             y1="78"
             x2="50"
             y2="58"
-            stroke="#ECE7DC"
+            stroke="#E8D9A8"
             strokeWidth="0.5"
           />
           <line
@@ -611,7 +611,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
             y1="78"
             x2="50"
             y2="58"
-            stroke="#ECE7DC"
+            stroke="#E8D9A8"
             strokeWidth="0.5"
           />
         </svg>
@@ -658,7 +658,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
       <div className="absolute w-full bottom-20 sm:bottom-14 inset-x-0 text-center z-15 flex flex-col items-center gap-2 pointer-events-none">
         <div className="flex items-center justify-center gap-3">
           <EnvelopeHeart className="w-6 h-6 sm:w-8 sm:h-8 text-rose-300/70 animate-[envelopeFloatSlow_5s_ease-in-out_infinite]" />
-          <p className="font-editorial italic text-lg sm:text-xl text-[#727A75] m-0">
+          <p className="font-editorial italic text-lg sm:text-xl text-[#8C6B22] m-0">
             We have some news...
           </p>
           <EnvelopeFlower className="w-6 h-6 sm:w-8 sm:h-8 text-rose-300/70 animate-[envelopeFloatRev_5s_ease-in-out_infinite]" />
