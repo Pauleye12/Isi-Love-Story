@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { data, Form, useNavigation } from "react-router";
 import type { Route } from "./+types/RSVP";
 import { createClient } from "~/utils/supabase.server";
+import WeddingInvitation from "~/components/WeddingInvitation";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -234,6 +235,7 @@ export async function action({ request }: Route.ActionArgs) {
         error: null,
         success: true,
         guestName: guest.full_name,
+        availability,
       },
       { headers },
     );
@@ -291,14 +293,15 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  // Store confirmed guest name in state
+  // Store confirmed guest name and availability in state
   const [confirmedName, setConfirmedName] = useState<string | null>(null);
+  const [confirmedAvailability, setConfirmedAvailability] = useState<string | null>(null);
   const [selectedGifts, setSelectedGifts] = useState<Set<string>>(new Set());
   const [giftSubmitted, setGiftSubmitted] = useState(false);
   const [showGiftConfirm, setShowGiftConfirm] = useState(false);
   const giftFormRef = useRef<HTMLFormElement>(null);
 
-  // Update confirmed name from action data
+  // Update confirmed name and availability from action data
   if (
     actionData?.intent === "confirmAvailability" &&
     actionData.success &&
@@ -306,6 +309,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
     confirmedName !== actionData.guestName
   ) {
     setConfirmedName(actionData.guestName);
+    setConfirmedAvailability((actionData as any).availability ?? null);
   }
 
   if (
@@ -438,6 +442,11 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                     <FloatingRing className="w-4 h-4 text-amber-400/50" />
                     <FloatingHeart className="w-3 h-3 text-rose-400/60" />
                   </div>
+
+                  {/* Personalised invitation — only for attending guests */}
+                  {confirmedAvailability === "Available" && (
+                    <WeddingInvitation guestName={confirmedName} />
+                  )}
                 </div>
               ) : (
                 <>
