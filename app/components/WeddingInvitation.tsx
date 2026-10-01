@@ -48,8 +48,8 @@ export default function WeddingInvitation({
          We place the guest name near the bottom of the front card.
       ──────────────────────────────────────────────────── */
       const frontCardBottom = img.height * 0.44;
-      const nameY = frontCardBottom - img.height * 0.025;
-      const nameCenterX = img.width / 2;
+      const nameY = frontCardBottom;
+      const nameCenterX = img.width / 2 + img.width * 0.1;
 
       // Dynamically scale font size based on image width
       const baseFontSize = Math.round(img.width * 0.04);
@@ -161,8 +161,7 @@ export default function WeddingInvitation({
             style={{
               height: "1px",
               width: "2rem",
-              background:
-                "linear-gradient(to right, transparent, #6ee7b7)",
+              background: "linear-gradient(to right, transparent, #6ee7b7)",
             }}
           />
           <span
@@ -180,8 +179,7 @@ export default function WeddingInvitation({
             style={{
               height: "1px",
               width: "2rem",
-              background:
-                "linear-gradient(to left, transparent, #6ee7b7)",
+              background: "linear-gradient(to left, transparent, #6ee7b7)",
             }}
           />
         </div>
@@ -201,8 +199,7 @@ export default function WeddingInvitation({
           }}
           onClick={() => setIsModalOpen(true)}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.transform =
-              "scale(1.01)";
+            (e.currentTarget as HTMLElement).style.transform = "scale(1.01)";
             (e.currentTarget as HTMLElement).style.boxShadow =
               "0 20px 40px -10px rgba(16, 185, 129, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.08)";
           }}
@@ -316,8 +313,7 @@ export default function WeddingInvitation({
                 background: "linear-gradient(135deg, #059669, #047857)",
                 border: "none",
                 cursor: "pointer",
-                boxShadow:
-                  "0 4px 12px rgba(5, 150, 105, 0.3)",
+                boxShadow: "0 4px 12px rgba(5, 150, 105, 0.3)",
                 transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
@@ -431,13 +427,11 @@ export default function WeddingInvitation({
                   transition: "all 0.15s ease",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background =
-                    "#f3f4f6";
+                  (e.currentTarget as HTMLElement).style.background = "#f3f4f6";
                   (e.currentTarget as HTMLElement).style.color = "#1f2937";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background =
-                    "white";
+                  (e.currentTarget as HTMLElement).style.background = "white";
                   (e.currentTarget as HTMLElement).style.color = "#6b7280";
                 }}
                 aria-label="Close invitation modal"
@@ -488,8 +482,7 @@ export default function WeddingInvitation({
                   fontSize: "0.85rem",
                   fontWeight: 600,
                   color: "white",
-                  background:
-                    "linear-gradient(135deg, #059669, #047857)",
+                  background: "linear-gradient(135deg, #059669, #047857)",
                   border: "none",
                   cursor: "pointer",
                   boxShadow: "0 4px 12px rgba(5, 150, 105, 0.3)",
