@@ -295,7 +295,9 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
 
   // Store confirmed guest name and availability in state
   const [confirmedName, setConfirmedName] = useState<string | null>(null);
-  const [confirmedAvailability, setConfirmedAvailability] = useState<string | null>(null);
+  const [confirmedAvailability, setConfirmedAvailability] = useState<
+    string | null
+  >(null);
   const [selectedGifts, setSelectedGifts] = useState<Set<string>>(new Set());
   const [giftSubmitted, setGiftSubmitted] = useState(false);
   const [showGiftConfirm, setShowGiftConfirm] = useState(false);
@@ -476,7 +478,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                         id="rsvp-name"
                         type="text"
                         name="fullName"
-                        placeholder="Firstname Surname (e.g. Tunde Adeyemi)"
+                        placeholder="Surname Firstname (e.g. Adeyemi Tunde)"
                         required
                         className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                       />

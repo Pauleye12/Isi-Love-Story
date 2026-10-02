@@ -49,11 +49,11 @@ export default function WeddingInvitation({
       ──────────────────────────────────────────────────── */
       const frontCardBottom = img.height * 0.44;
       const nameY = frontCardBottom;
-      const nameCenterX = img.width / 2 + img.width * 0.1;
+      const nameCenterX = img.width / 2 + img.width * 0.15;
 
       // Dynamically scale font size based on image width
-      const baseFontSize = Math.round(img.width * 0.04);
-      const fontSize = Math.max(14, Math.min(baseFontSize, 42));
+      const baseFontSize = Math.round(img.width * 0.03);
+      const fontSize = Math.max(12, Math.min(baseFontSize, 32));
 
       // Draw text with elegant styling
       ctx.save();
@@ -66,9 +66,9 @@ export default function WeddingInvitation({
       ctx.shadowOffsetX = 1;
       ctx.shadowOffsetY = 1;
 
-      // Guest name in an elegant serif font
-      ctx.font = `italic ${fontSize}px "Great Vibes", "Alex Brush", "Playfair Display", "Georgia", serif`;
-      ctx.fillStyle = "#2d5016"; // Deep emerald green matching the card theme
+      // Guest name in a bold serif font matching "BRAVA EVENT CENTER" style
+      ctx.font = `bold ${fontSize}px "Cinzel", "Playfair Display", "Georgia", serif`;
+      ctx.fillStyle = "#000000";
 
       ctx.fillText(guestName, nameCenterX, nameY);
 
@@ -86,7 +86,7 @@ export default function WeddingInvitation({
       setIsLoading(false);
     };
 
-    img.src = "/IVBg.png";
+    img.src = "/IV.jpeg";
   }, [guestName]);
 
   useEffect(() => {
