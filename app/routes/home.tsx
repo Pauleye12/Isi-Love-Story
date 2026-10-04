@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/home2";
 
 export function meta({}: Route.MetaArgs) {
   return [
