@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 // import type { Route } from "./+types/home";
 import type { Route } from "./+types/home2";
+import { data } from "react-router";
+import { createClient } from "~/utils/supabase.server";
 import { ZipReveal } from "../components/ZipReveal";
 import { HeroSection } from "../components/HeroSection";
 import { CoupleSection } from "../components/CoupleSection";
@@ -40,7 +42,22 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
+// ---------- Loader ----------
+export async function loader({ request }: Route.LoaderArgs) {
+  const { supabase, headers } = createClient(request);
+
+  const { data: displayTexts } = await supabase
+    .from("DisplayTexts")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  return data({ displayTexts: displayTexts ?? null }, { headers });
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const { displayTexts } = loaderData;
   const [isRevealed, setIsRevealed] = useState(false);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -119,7 +136,7 @@ export default function Home() {
             <PaletteSection />
             <LocationSection />
             <EventContact />
-            <Gift />
+            <Gift displayTexts={displayTexts} />
             <ClosingSection />
             {/* <ContactMe /> */}
           </>

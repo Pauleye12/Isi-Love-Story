@@ -22,7 +22,7 @@ export function CoupleSection() {
   };
 
   return (
-    <section className="min-h-screen w-full py-14 px-4 flex flex-col items-center justify-center relative z-10">
+    <section className="min-h-[80dvh] w-full py-14 px-4 flex flex-col items-center justify-center relative z-10">
       {/* Background radial highlight for readability */}
       <div className="absolute inset-0 bg-radial-gradient from-[#50C878]/10 via-transparent to-transparent pointer-events-none hidden " />
 
@@ -43,7 +43,7 @@ export function CoupleSection() {
 
         <motion.h2
           variants={cardVariants}
-          className="font-serif-romantic text-4xl sm:text-5xl text-[#FFE5B4] mb-16 text-center"
+          className="font-serif-romantic text-4xl sm:text-5xl text-[#FFE5B4] mb-1 text-center"
         >
           Meet the Couple
         </motion.h2>

@@ -67,7 +67,7 @@ export function ClosingSection() {
   };
 
   return (
-    <section className="min-h-screen w-full py-14 px-4 flex flex-col items-center justify-center relative z-10 text-center select-none">
+    <section className="min-h-[70dvh] w-full py-14 px-4 flex flex-col items-center justify-center relative z-10 text-center select-none">
       <motion.div
         variants={containerVariants}
         initial="hidden"

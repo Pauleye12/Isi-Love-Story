@@ -55,7 +55,7 @@ export function PaletteSection() {
   };
 
   return (
-    <section className="min-h-screen w-full py-14 px-4 flex flex-col items-center justify-center relative z-10">
+    <section className="min-h-[70dvh] w-full py-14 px-4 flex flex-col items-center justify-center relative z-10">
       <motion.div
         variants={containerVariants}
         initial="hidden"

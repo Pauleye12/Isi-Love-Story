@@ -1,7 +1,18 @@
 import { useState } from "react";
 import { motion, type Variants } from "motion/react";
 
-export default function Gift() {
+interface DisplayTexts {
+  bank_name?: string;
+  account_number?: string;
+  account_name?: string;
+  monitization_text?: string;
+}
+
+interface GiftProps {
+  displayTexts: DisplayTexts | null;
+}
+
+export default function Gift({ displayTexts }: GiftProps) {
   const [copied, setCopied] = useState(false);
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -22,8 +33,12 @@ export default function Gift() {
     },
   };
 
+  const accountNumber = displayTexts?.account_number ?? "";
+  const bankName = displayTexts?.bank_name ?? "";
+  const accountName = displayTexts?.account_name ?? "";
+
   return (
-    <section className="min-h-screen w-full py-14 px-4 flex flex-col items-center justify-center relative z-10">
+    <section className="min-h-[80dvh]  w-full py-14 px-4 flex flex-col items-center justify-center relative z-10">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -41,7 +56,7 @@ export default function Gift() {
 
         <motion.h2
           variants={itemVariants}
-          className="font-serif-romantic text-4xl sm:text-5xl text-[#FFE5B4] mb-16 text-center"
+          className="font-serif-romantic text-4xl sm:text-5xl text-[#FFE5B4] mb-1 text-center"
         >
           RSVP and Gifting
         </motion.h2>
@@ -76,9 +91,8 @@ export default function Gift() {
               Wishing Well
             </h3> */}
             <p className="text-stone-300 text-sm leading-relaxed max-w-lg mx-auto">
-              Due to logistics constraints, a monetary gift would be greatly
-              appreciated. However, if you prefer the traditional gifting,
-              please see gifting options in the RSVP and Gift Registry below
+              {displayTexts?.monitization_text ??
+                "Due to logistics constraints, a monetary gift would be greatly appreciated. However, if you prefer the traditional gifting, please see gifting options in the RSVP and Gift Registry below"}
             </p>
           </div>
           {/* <p className="font-editorial text-lg sm:text-xl leading-relaxed text-center text-wedding-text max-w-120 mx-auto mb-9 reveal reveal-delay-1">
@@ -97,15 +111,16 @@ export default function Gift() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <p className="text-[#FFE5B4] text-sm font-mono font-semibold">
-                    4240074468
+                    {accountNumber}
                   </p>
                   <p className="text-stone-400 text-xs font-light">
-                    Eco Bank • Peter Oluwagbemiga Ariyoleye
+                    {bankName}
+                    {accountName ? ` • ${accountName}` : ""}
                   </p>
                 </div>
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText("4240074468").then(() => {
+                    navigator.clipboard.writeText(accountNumber).then(() => {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     });

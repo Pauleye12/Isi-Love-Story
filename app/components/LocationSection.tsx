@@ -40,7 +40,7 @@ export function LocationSection() {
 
         <motion.h2
           variants={itemVariants}
-          className="font-serif-romantic text-4xl sm:text-5xl text-[#FFE5B4] mb-16 text-center"
+          className="font-serif-romantic text-4xl sm:text-5xl text-[#FFE5B4] mb-10 text-center"
         >
           Where & When
         </motion.h2>
@@ -125,7 +125,7 @@ export function LocationSection() {
             </div>
 
             {/* Actions button */}
-            <div className="mt-8 pt-6 border-t border-stone-800">
+            <div className="mt-8 pt-6 border-t border-stone-800 flex items-center justify-center ">
               <motion.a
                 href="https://maps.app.goo.gl/N3nCPA6bf52Wd87i9?g_st=ac"
                 target="_blank"
