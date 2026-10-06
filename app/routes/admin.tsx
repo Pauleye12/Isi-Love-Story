@@ -117,7 +117,7 @@ export async function action({ request }: Route.ActionArgs) {
       );
     }
 
-    const fullName = `${surname} ${firstName}`;
+    const fullName = `${firstName} ${surname}`;
 
     // Generate a unique 5-digit code, retry if collision
     let uniqueCode = generateUniqueCode();
@@ -570,17 +570,6 @@ export default function Admin({
                 <Form method="post" className="add-form">
                   <input type="hidden" name="_action" value="addGuest" />
                   <div className="form-group">
-                    <label htmlFor="add-surname">Surname</label>
-                    <input
-                      id="add-surname"
-                      className="form-input"
-                      type="text"
-                      name="surname"
-                      placeholder="e.g. Adeyemi"
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
                     <label htmlFor="add-firstname">First Name</label>
                     <input
                       id="add-firstname"
@@ -591,6 +580,18 @@ export default function Admin({
                       required
                     />
                   </div>
+                  <div className="form-group">
+                    <label htmlFor="add-surname">Surname</label>
+                    <input
+                      id="add-surname"
+                      className="form-input"
+                      type="text"
+                      name="surname"
+                      placeholder="e.g. Adeyemi"
+                      required
+                    />
+                  </div>
+
                   <button
                     type="submit"
                     className="btn btn-success"

@@ -414,7 +414,7 @@ function EnvelopeIntro({ isOpen, onOpen }: EnvelopeIntroProps) {
       </div>
 
       {/* Bottom CTA */}
-      <div className="absolute w-full bottom-75 sm:bottom-14 inset-x-0 text-center z-15 flex flex-col items-center gap-2 pointer-events-none">
+      <div className="absolute w-full bottom-55 sm:bottom-14 inset-x-0 text-center z-15 flex flex-col items-center gap-2 pointer-events-none">
         {/* <p className="font-editorial italic text-lg sm:text-xl text-[#1B5E3B] m-0">
           We have some news...
         </p> */}
@@ -918,69 +918,73 @@ function Registry({ displayTexts }: { displayTexts: DisplayTexts | null }) {
 
       {/* Account Details Card */}
       {(accountNumber || bankName) && (
-      <div className="relative flex flex-col items-start justify-between rounded-2xl p-5 sm:p-6 mb-4 border border-[#1B5E3B]/15 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)] transition-all duration-300 reveal reveal-left overflow-hidden bg-white/70 backdrop-blur-sm">
-        <div className="flex w-full items-center gap-4">
-          <div className="w-11 h-11 rounded-xl bg-[#E8F0DE] flex items-center justify-center text-xl">
-            ✈️
+        <div className="relative flex flex-col items-start justify-between rounded-2xl p-5 sm:p-6 mb-4 border border-[#1B5E3B]/15 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)] transition-all duration-300 reveal reveal-left overflow-hidden bg-white/70 backdrop-blur-sm">
+          <div className="flex w-full items-center gap-4">
+            <div className="w-11 h-11 rounded-xl bg-[#E8F0DE] flex items-center justify-center text-xl">
+              ✈️
+            </div>
+            <span className="font-serif text-lg font-medium text-[#1B5E3B]">
+              Account Details
+            </span>
           </div>
-          <span className="font-serif text-lg font-medium text-[#1B5E3B]">
-            Account Details
-          </span>
-        </div>
-        <div className="flex flex-col gap-1 mt-3">
-          {bankName && <p className="font-serif text-[#4a4536]">{bankName}</p>}
-          <div className="flex items-center gap-3">
-            <p className="font-serif text-[#1B5E3B] font-medium font-mono tracking-wide">
-              {accountNumber}
-            </p>
-            <button
-              type="button"
-              onClick={handleCopyAccount}
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-sans transition-all duration-200 cursor-pointer ${
-                copied
-                  ? "bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-xs"
-                  : "bg-[#E8F0DE] text-[#1B5E3B] border border-[#1B5E3B]/25 hover:bg-[#1B5E3B]/10 hover:border-[#1B5E3B]/50"
-              }`}
-              title="Copy account number"
-              aria-label="Copy account number"
-            >
-              {copied ? (
-                <>
-                  <svg
-                    className="w-3.5 h-3.5 text-emerald-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <span className="font-medium">Copied</span>
-                </>
-              ) : (
-                <>
-                  <svg
-                    className="w-3.5 h-3.5 text-[#1B5E3B]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                  </svg>
-                  <span>Copy</span>
-                </>
-              )}
-            </button>
+          <div className="flex flex-col gap-1 mt-3">
+            {bankName && (
+              <p className="font-serif text-[#4a4536]">{bankName}</p>
+            )}
+            <div className="flex items-center gap-3">
+              <p className="font-serif text-[#1B5E3B] font-medium font-mono tracking-wide">
+                {accountNumber}
+              </p>
+              <button
+                type="button"
+                onClick={handleCopyAccount}
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-sans transition-all duration-200 cursor-pointer ${
+                  copied
+                    ? "bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-xs"
+                    : "bg-[#E8F0DE] text-[#1B5E3B] border border-[#1B5E3B]/25 hover:bg-[#1B5E3B]/10 hover:border-[#1B5E3B]/50"
+                }`}
+                title="Copy account number"
+                aria-label="Copy account number"
+              >
+                {copied ? (
+                  <>
+                    <svg
+                      className="w-3.5 h-3.5 text-emerald-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    <span className="font-medium">Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="w-3.5 h-3.5 text-[#1B5E3B]"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                    </svg>
+                    <span>Copy</span>
+                  </>
+                )}
+              </button>
+            </div>
+            {accountName && (
+              <p className="font-serif text-[#4a4536]">{accountName}</p>
+            )}
           </div>
-          {accountName && <p className="font-serif text-[#4a4536]">{accountName}</p>}
         </div>
-      </div>
       )}
 
       {/* Gift Registry Link */}

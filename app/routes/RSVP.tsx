@@ -478,7 +478,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                         id="rsvp-name"
                         type="text"
                         name="fullName"
-                        placeholder="Surname Firstname (e.g. Adeyemi Tunde)"
+                        placeholder=" Firstname Surname (e.g. Tunde Adeyemi)"
                         required
                         className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                       />
