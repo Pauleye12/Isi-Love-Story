@@ -301,6 +301,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
   const [selectedGifts, setSelectedGifts] = useState<Set<string>>(new Set());
   const [giftSubmitted, setGiftSubmitted] = useState(false);
   const [showGiftConfirm, setShowGiftConfirm] = useState(false);
+  const [isStoryClicked, setIsStoryClicked] = useState(false);
   const giftFormRef = useRef<HTMLFormElement>(null);
 
   // Update confirmed name and availability from action data
@@ -434,9 +435,16 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                   <h3 className="text-lg font-bold text-emerald-800">
                     Thank You, {confirmedName}!
                   </h3>
-                  <p className="mt-1 text-sm text-emerald-600">
-                    Your availability status has been received by the couple.
-                  </p>
+                  {confirmedAvailability === "Available" ? (
+                    <p className="mt-1 text-sm text-emerald-600">
+                      Your availability status has been received by the couple.
+                    </p>
+                  ) : (
+                    <p className="mt-1 text-sm text-emerald-600">
+                      We are sorry to hear you can not make it. You are still
+                      welcome to check out our gift registry below
+                    </p>
+                  )}
 
                   <div className="mt-3 flex items-center justify-center gap-2">
                     <FloatingHeart className="w-3 h-3 text-rose-400/60" />
@@ -452,11 +460,19 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                   {confirmedAvailability === "Available" && (
                     <div className="w-full flex flex-col mt-4 items-center justify-center ">
                       <p className="text-sm text-emerald-600">
-                        Visit our wedding website for more details
+                        Tap below to visit our wedding website
                       </p>
                       <Link
                         to="/"
-                        className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg border border-emerald-300 bg-white px-5 py-2 text-sm font-semibold text-emerald-700 shadow-sm transition-all hover:bg-emerald-50 hover:shadow-md"
+                        onClick={() => {
+                          setIsStoryClicked(true);
+                          setTimeout(() => setIsStoryClicked(false), 600);
+                        }}
+                        className={`mt-2 inline-flex items-center justify-center gap-2 rounded-lg border px-5 py-2 text-sm font-semibold shadow-sm transition-all duration-150 active:border-emerald-600 active:bg-emerald-600 active:text-white ${
+                          isStoryClicked
+                            ? "border-emerald-600 bg-emerald-600 text-white shadow-md"
+                            : "border-emerald-300 bg-white text-emerald-700 hover:bg-emerald-50 hover:shadow-md"
+                        }`}
                       >
                         Our Story <strong className="mt-1">→</strong>
                       </Link>
@@ -664,7 +680,7 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                           {displayTexts.gifting_guide}
                         </p>
                         <p className="text-sm text-orange-800 leading-relaxed">
-                          <strong>Jumia Pickup Details:</strong>
+                          <strong>Jumia Pickup Details: </strong>
                           {displayTexts.jumia_pickup}
                         </p>
                       </div>

@@ -104,13 +104,13 @@ export default function Gift({ displayTexts }: GiftProps) {
           {/* Account Details */}
           <div className="space-y-4">
             {/* Bank Details */}
-            <div className="bg-stone-900/30 rounded-xl p-5 border border-stone-800">
+            <div className="bg-stone-900/30 rounded-xl p-5 border border-stone-800 flex items-center justify-center flex-col ">
               <h4 className="font-sans text-xs text-[#FFE5B4] uppercase tracking-wider mb-2">
                 Bank Transfer
               </h4>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center items-center justify-center gap-3">
                 <div>
-                  <p className="text-[#FFE5B4] text-sm font-mono font-semibold">
+                  <p className="text-[#FFE5B4] text-sm font-mono font-semibold text-center">
                     {accountNumber}
                   </p>
                   <p className="text-stone-400 text-xs font-light">
