@@ -71,11 +71,11 @@ export function CoupleSection() {
               <span className="font-serif text-4xl leading-none -align-[0.4rem] text-stone-300 mr-1">
                 “
               </span>
-              What started as a contact exchange at a mutual friend's wedding
-              has grown into a love we're excited to celebrate with the people
-              who matter most to us. On Nov 28, we take off on a forever journey
-              and invite you to share in our joy as we celebrate the blending of
-              our families and traditions. Thank you for your love, prayers and
+              What started as a casual exchange at a mutual friend's wedding has
+              grown into a love we're excited to share with the people who
+              matter most to us. On 28 November, we take off on a forever
+              journey and invite you to join us as we bring together our
+              families and traditions. Thank you for your love, prayers and
               support; we can't wait to celebrate with you!
             </p>
             <p className="mt-3">With Love,</p>

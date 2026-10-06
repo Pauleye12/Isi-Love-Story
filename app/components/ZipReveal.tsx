@@ -332,7 +332,7 @@ export function ZipReveal({ onRevealStart, onRevealComplete }: ZipRevealProps) {
         className="absolute text-center z-30 w-80 px-4 pointer-events-none"
       >
         <h2 className="text-[#FFE5B4] font-serif-romantic text-3xl sm:text-4xl tracking-wide leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-          #TheIVLeague
+          #TheIVLeague#
         </h2>
         <p className="text-[#50C878]/80 font-sans text-xs uppercase tracking-[0.25em] mt-3 animate-pulse drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
           Drag down to reveal

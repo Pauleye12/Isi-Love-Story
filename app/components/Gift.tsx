@@ -132,7 +132,7 @@ export default function Gift({ displayTexts }: GiftProps) {
               </div>
             </div>
 
-            <div className="bg-stone-900/30 rounded-xl p-5 border border-stone-800">
+            <div className="bg-stone-900/30 rounded-xl p-5 border border-stone-800 flex flex-col justify-center items-center ">
               <div className="flex items-center gap-4">
                 <div className="w-11 h-11 rounded-xl  flex items-center justify-center text-xl ">
                   🎁
