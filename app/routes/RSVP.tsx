@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { data, Form, Link, useNavigation } from "react-router";
 import type { Route } from "./+types/RSVP";
 import { createClient } from "~/utils/supabase.server";
@@ -304,16 +304,51 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
   const [isStoryClicked, setIsStoryClicked] = useState(false);
   const giftFormRef = useRef<HTMLFormElement>(null);
 
-  // Update confirmed name and availability from action data
-  if (
-    actionData?.intent === "confirmAvailability" &&
-    actionData.success &&
-    actionData.guestName &&
-    confirmedName !== actionData.guestName
-  ) {
-    setConfirmedName(actionData.guestName);
-    setConfirmedAvailability((actionData as any).availability ?? null);
-  }
+  // Restore confirmed guest name and availability from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedName = localStorage.getItem("confirmedGuestName");
+      const savedAvailability = localStorage.getItem(
+        "confirmedGuestAvailability",
+      );
+      if (savedName) setConfirmedName(savedName);
+      if (savedAvailability) setConfirmedAvailability(savedAvailability);
+    } catch (e) {
+      console.error("Could not read from localStorage", e);
+    }
+  }, []);
+
+  // Update confirmed name and availability from action data and persist to localStorage
+  useEffect(() => {
+    if (
+      actionData?.intent === "confirmAvailability" &&
+      actionData.success &&
+      actionData.guestName
+    ) {
+      try {
+        localStorage.setItem("confirmedGuestName", actionData.guestName);
+        if ((actionData as any).availability) {
+          localStorage.setItem(
+            "confirmedGuestAvailability",
+            (actionData as any).availability,
+          );
+        }
+      } catch (e) {
+        console.error("Could not write to localStorage", e);
+      }
+      setConfirmedName(actionData.guestName);
+      setConfirmedAvailability((actionData as any).availability ?? null);
+    }
+  }, [actionData]);
+
+  const handleResetName = () => {
+    try {
+      localStorage.removeItem("confirmedGuestName");
+      localStorage.removeItem("confirmedGuestAvailability");
+    } catch (e) {}
+    setConfirmedName(null);
+    setConfirmedAvailability(null);
+  };
 
   if (
     actionData?.intent === "selectGifts" &&
@@ -478,6 +513,16 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                       </Link>
                     </div>
                   )}
+
+                  <div className="mt-4 pt-3 border-t border-emerald-200/60 text-center">
+                    <button
+                      type="button"
+                      onClick={handleResetName}
+                      className="text-xs text-emerald-700 underline hover:text-emerald-900 cursor-pointer font-medium transition-colors"
+                    >
+                      Not {confirmedName}? Change name / RSVP again
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <>

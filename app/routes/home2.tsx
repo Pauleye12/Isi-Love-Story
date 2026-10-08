@@ -46,18 +46,80 @@ export function meta({}: Route.MetaArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const { supabase, headers } = createClient(request);
 
-  const { data: displayTexts } = await supabase
-    .from("DisplayTexts")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+  const [giftsRes, displayTextsRes] = await Promise.all([
+    supabase
+      .from("gifts")
+      .select("*")
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("DisplayTexts")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
 
-  return data({ displayTexts: displayTexts ?? null }, { headers });
+  return data(
+    {
+      gifts: giftsRes.data ?? [],
+      displayTexts: displayTextsRes.data ?? null,
+    },
+    { headers },
+  );
+}
+
+// ---------- Action ----------
+export async function action({ request }: Route.ActionArgs) {
+  const { supabase, headers } = createClient(request);
+  const formData = await request.formData();
+  const intent = formData.get("_action") as string;
+
+  // --- Select Gifts ---
+  if (intent === "selectGifts") {
+    const guestName = (formData.get("guestName") as string)?.trim();
+    const giftIds = formData.getAll("giftId") as string[];
+
+    if (!guestName || giftIds.length === 0) {
+      return data(
+        {
+          intent,
+          error: "Please select at least one gift.",
+          success: false,
+          guestName,
+        },
+        { status: 400, headers },
+      );
+    }
+
+    // Update each selected gift
+    for (const giftId of giftIds) {
+      await supabase
+        .from("gifts")
+        .update({ chosen_by: guestName })
+        .eq("id", giftId)
+        .eq("chosen_by", "none"); // only update unclaimed gifts
+    }
+
+    return data(
+      {
+        intent,
+        error: null,
+        success: true,
+        guestName,
+        giftSuccess: true,
+      },
+      { headers },
+    );
+  }
+
+  return data(
+    { intent: null, error: "Unknown action.", success: false },
+    { status: 400, headers },
+  );
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  const { displayTexts } = loaderData;
+  const { displayTexts, gifts } = loaderData;
   const [isRevealed, setIsRevealed] = useState(false);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -136,7 +198,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <PaletteSection />
             <LocationSection />
             <EventContact />
-            <Gift displayTexts={displayTexts} />
+            <Gift displayTexts={displayTexts} gifts={gifts} />
             <ClosingSection />
             {/* <ContactMe /> */}
           </>
