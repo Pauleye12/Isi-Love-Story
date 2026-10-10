@@ -42,7 +42,7 @@ export default function WeddingInvitation({
       // Draw the original invitation image
       ctx.drawImage(img, 0, 0);
 
-      /* ── Name placement ───────────────────────────────
+      /* ── Front card: Guest name placement ─────────────
          The image has two cards stacked vertically.
          The front card (ACCESS CARD) occupies the top ~46%.
          We place the guest name near the bottom of the front card.
@@ -71,6 +71,33 @@ export default function WeddingInvitation({
       ctx.fillStyle = "#000000";
 
       ctx.fillText(guestName, nameCenterX, nameY);
+
+      ctx.restore();
+
+      /* ── Back card: "(Admits One)" placement ───────────
+         The back card (bottom card) has "STRICTLY BY INVITATION"
+         near the bottom. We place "(Admits One)" just below it,
+         centered horizontally at the bottom center of the card.
+      ──────────────────────────────────────────────────── */
+      const admitsCenterX = img.width / 2;
+      const admitsY = img.height * 0.87;
+
+      const baseAdmitsFontSize = Math.round(img.width * 0.015);
+      const admitsFontSize = Math.max(22, Math.min(baseAdmitsFontSize, 20));
+
+      ctx.save();
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      ctx.shadowColor = "rgba(0, 0, 0, 0.12)";
+      ctx.shadowBlur = 3;
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 1;
+
+      ctx.font = `bold ${admitsFontSize}px "Cinzel", "Playfair Display", "Georgia", serif`;
+      ctx.fillStyle = "#000000";
+
+      ctx.fillText("Admits One", admitsCenterX, admitsY);
 
       ctx.restore();
 
