@@ -52,6 +52,8 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
   }, [fetcher.data, giftSubmitted]);
 
   function toggleGift(giftId: string) {
+    const gift = (gifts ?? []).find((g) => String(g.id) === String(giftId));
+    if (gift?.chosen_by && gift.chosen_by !== "none") return;
     setSelectedGifts((prev) => {
       const next = new Set(prev);
       if (next.has(giftId)) {
@@ -240,10 +242,10 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
                   The couple will be delighted!
                 </p>
               </div>
-            ) : !hasAvailableGifts ? (
+            ) : (gifts ?? []).length === 0 ? (
               <div className="py-6 text-center text-sm text-stone-400">
                 <div className="mb-2 text-2xl">🎁</div>
-                <p>All gifts have been claimed. Thank you!</p>
+                <p>No gifts added to the registry yet. Thank you!</p>
               </div>
             ) : (
               <div>
@@ -254,43 +256,85 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
                     </div>
                   )}
 
+                {!hasAvailableGifts && (
+                  <div className="mb-4 rounded-xl border border-amber-500/40 bg-amber-950/30 px-4 py-3 text-center text-xs text-amber-200">
+                    All gifts on the registry have been selected. Thank you for your generosity! You can still send a monetary gift using the bank account details above.
+                  </div>
+                )}
+
                 <div className="space-y-2.5 mb-5">
-                  {availableGifts.map((gift) => {
+                  {(gifts ?? []).map((gift) => {
                     const giftIdStr = String(gift.id);
+                    const isClaimed = Boolean(
+                      gift.chosen_by && gift.chosen_by !== "none"
+                    );
                     const isSelected = selectedGifts.has(giftIdStr);
                     return (
                       <label
                         key={gift.id}
-                        className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3.5 transition-all ${
-                          isSelected
-                            ? "border-[#50C878] bg-[#50C878]/15 shadow-sm"
-                            : "border-stone-800 bg-stone-900/40 hover:border-[#50C878]/40 hover:bg-stone-900/60"
+                        className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 transition-all ${
+                          isClaimed
+                            ? "cursor-not-allowed border-stone-800/80 bg-stone-900/30 opacity-50 select-none"
+                            : isSelected
+                            ? "border-[#50C878] bg-[#50C878]/15 shadow-sm cursor-pointer"
+                            : "cursor-pointer border-stone-800 bg-stone-900/40 hover:border-[#50C878]/40 hover:bg-stone-900/60"
                         }`}
+                        onClick={(e) => {
+                          if (isClaimed) {
+                            e.preventDefault();
+                          }
+                        }}
                       >
                         <input
                           type="checkbox"
-                          name="giftId"
+                          name={isClaimed ? undefined : "giftId"}
                           value={gift.id}
-                          checked={isSelected}
-                          disabled={!confirmedName}
-                          onChange={() => toggleGift(giftIdStr)}
-                          className="h-4 w-4 rounded border-stone-600 accent-[#50C878] focus:ring-[#50C878]"
+                          checked={isClaimed ? false : isSelected}
+                          disabled={isClaimed || !confirmedName}
+                          aria-disabled={isClaimed}
+                          onChange={() => {
+                            if (!isClaimed) {
+                              toggleGift(giftIdStr);
+                            }
+                          }}
+                          className={`h-4 w-4 rounded border-stone-600 accent-[#50C878] focus:ring-[#50C878] ${
+                            isClaimed
+                              ? "cursor-not-allowed opacity-30"
+                              : "cursor-pointer"
+                          }`}
                         />
-                        <div className="flex-1">
-                          <span className="text-sm font-medium text-stone-200">
+                        <div className="flex-1 flex items-center gap-2 flex-wrap">
+                          <span
+                            className={`text-sm font-medium ${
+                              isClaimed
+                                ? "line-through text-stone-500"
+                                : "text-stone-200"
+                            }`}
+                          >
                             {gift.gift_name}
                           </span>
+                          {isClaimed && (
+                            <span className="inline-flex items-center rounded-full bg-stone-800 border border-stone-700/60 px-2 py-0.5 text-[10px] font-medium tracking-wide uppercase text-stone-400">
+                              Selected
+                            </span>
+                          )}
                         </div>
                         {gift.purchase_link && (
-                          <a
-                            href={gift.purchase_link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs font-medium text-[#50C878] hover:underline"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            View ↗
-                          </a>
+                          isClaimed ? (
+                            <span className="text-xs font-medium text-stone-500 cursor-not-allowed line-through select-none">
+                              View ↗
+                            </span>
+                          ) : (
+                            <a
+                              href={gift.purchase_link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs font-medium text-[#50C878] hover:underline"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              View ↗
+                            </a>
+                          )
                         )}
                       </label>
                     );
@@ -301,15 +345,21 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
                   <button
                     type="button"
                     onClick={() => {
-                      if (selectedGifts.size > 0) {
+                      if (selectedGifts.size > 0 && hasAvailableGifts) {
                         setShowGiftConfirm(true);
                       }
                     }}
-                    disabled={isSubmitting || selectedGifts.size === 0}
+                    disabled={
+                      isSubmitting ||
+                      selectedGifts.size === 0 ||
+                      !hasAvailableGifts
+                    }
                     className="w-full bg-gradient-to-r from-[#50C878] to-[#3da863] hover:from-[#5dd889] hover:to-[#50C878] text-stone-950 font-sans text-xs uppercase tracking-wider py-3.5 rounded-xl shadow-md font-semibold cursor-pointer transition-all disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     {isSubmitting
                       ? "Submitting…"
+                      : !hasAvailableGifts
+                      ? "All Gifts Have Been Selected"
                       : `Submit Gift Selection (${selectedGifts.size})`}
                   </button>
                 ) : (

@@ -359,6 +359,8 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
   }
 
   function toggleGift(giftId: string) {
+    const gift = gifts.find((g: any) => String(g.id) === String(giftId));
+    if (gift?.chosen_by && gift.chosen_by !== "none") return;
     setSelectedGifts((prev) => {
       const next = new Set(prev);
       if (next.has(giftId)) {
@@ -631,10 +633,10 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                     The couple will be delighted!
                   </p>
                 </div>
-              ) : !hasAvailableGifts ? (
+              ) : gifts.length === 0 ? (
                 <div className="py-8 text-center text-sm text-gray-400">
                   <div className="mb-2 text-2xl">🎁</div>
-                  <p>All gifts have been claimed. Thank you!</p>
+                  <p>No gifts added yet. Thank you!</p>
                 </div>
               ) : (
                 <>
@@ -752,40 +754,85 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                       value={confirmedName ?? ""}
                     />
 
+                    {!hasAvailableGifts && (
+                      <div className="mb-4 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-3 text-center text-xs text-amber-800">
+                        All gifts on the registry have been selected. Thank you for your generosity! You can still send a monetary gift using the bank account details above.
+                      </div>
+                    )}
+
                     <div className="mb-5 space-y-2.5">
-                      {availableGifts.map((gift: any) => {
+                      {gifts.map((gift: any) => {
+                        const isClaimed = Boolean(
+                          gift.chosen_by && gift.chosen_by !== "none"
+                        );
                         const isSelected = selectedGifts.has(gift.id);
                         return (
                           <label
                             key={gift.id}
-                            className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3.5 transition-all ${
-                              isSelected
-                                ? "border-emerald-400 bg-emerald-50 shadow-sm"
-                                : "border-gray-200 bg-white hover:border-emerald-200 hover:bg-emerald-50/30"
+                            className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 transition-all ${
+                              isClaimed
+                                ? "cursor-not-allowed border-gray-200/70 bg-gray-100/70 opacity-60 select-none"
+                                : isSelected
+                                ? "border-emerald-400 bg-emerald-50 shadow-sm cursor-pointer"
+                                : "cursor-pointer border-gray-200 bg-white hover:border-emerald-200 hover:bg-emerald-50/30"
                             }`}
+                            onClick={(e) => {
+                              if (isClaimed) {
+                                e.preventDefault();
+                              }
+                            }}
                           >
                             <input
                               type="checkbox"
-                              name="giftId"
+                              name={isClaimed ? undefined : "giftId"}
                               value={gift.id}
-                              checked={isSelected}
-                              onChange={() => toggleGift(gift.id)}
-                              className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                              checked={isClaimed ? false : isSelected}
+                              disabled={isClaimed}
+                              aria-disabled={isClaimed}
+                              onChange={() => {
+                                if (!isClaimed) {
+                                  toggleGift(gift.id);
+                                }
+                              }}
+                              className={`h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 ${
+                                isClaimed
+                                  ? "cursor-not-allowed opacity-40"
+                                  : "cursor-pointer"
+                              }`}
                             />
-                            <div className="flex-1">
-                              <span className="text-sm font-semibold text-gray-900">
+                            <div className="flex-1 flex items-center gap-2 flex-wrap">
+                              <span
+                                className={`text-sm font-semibold ${
+                                  isClaimed
+                                    ? "line-through text-gray-400"
+                                    : "text-gray-900"
+                                }`}
+                              >
                                 {gift.gift_name}
                               </span>
+                              {isClaimed && (
+                                <span className="inline-flex items-center rounded-full bg-gray-200/80 px-2 py-0.5 text-[10px] font-medium tracking-wide uppercase text-gray-500">
+                                  Selected
+                                </span>
+                              )}
                             </div>
-                            <a
-                              href={gift.purchase_link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs font-medium text-emerald-600 hover:underline"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              View ↗
-                            </a>
+                            {gift.purchase_link && (
+                              isClaimed ? (
+                                <span className="text-xs font-medium text-gray-400 cursor-not-allowed line-through select-none">
+                                  View ↗
+                                </span>
+                              ) : (
+                                <a
+                                  href={gift.purchase_link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-xs font-medium text-emerald-600 hover:underline"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  View ↗
+                                </a>
+                              )
+                            )}
                           </label>
                         );
                       })}
@@ -793,11 +840,17 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
 
                     <button
                       type="submit"
-                      disabled={isSubmitting || selectedGifts.size === 0}
+                      disabled={
+                        isSubmitting ||
+                        selectedGifts.size === 0 ||
+                        !hasAvailableGifts
+                      }
                       className="w-full rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {isSubmitting
                         ? "Submitting…"
+                        : !hasAvailableGifts
+                        ? "All Gifts Have Been Selected"
                         : `Submit Gift Selection (${selectedGifts.size})`}
                     </button>
                   </Form>
