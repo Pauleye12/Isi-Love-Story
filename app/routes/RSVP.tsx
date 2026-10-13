@@ -756,14 +756,16 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
 
                     {!hasAvailableGifts && (
                       <div className="mb-4 rounded-xl border border-amber-200/80 bg-amber-50/70 px-4 py-3 text-center text-xs text-amber-800">
-                        All gifts on the registry have been selected. Thank you for your generosity! You can still send a monetary gift using the bank account details above.
+                        All gifts on the registry have been selected. Thank you
+                        for your generosity! You can still send a monetary gift
+                        using the bank account details above.
                       </div>
                     )}
 
                     <div className="mb-5 space-y-2.5">
                       {gifts.map((gift: any) => {
                         const isClaimed = Boolean(
-                          gift.chosen_by && gift.chosen_by !== "none"
+                          gift.chosen_by && gift.chosen_by !== "none",
                         );
                         const isSelected = selectedGifts.has(gift.id);
                         return (
@@ -773,8 +775,8 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                               isClaimed
                                 ? "cursor-not-allowed border-gray-200/70 bg-gray-100/70 opacity-60 select-none"
                                 : isSelected
-                                ? "border-emerald-400 bg-emerald-50 shadow-sm cursor-pointer"
-                                : "cursor-pointer border-gray-200 bg-white hover:border-emerald-200 hover:bg-emerald-50/30"
+                                  ? "border-emerald-400 bg-emerald-50 shadow-sm cursor-pointer"
+                                  : "cursor-pointer border-gray-200 bg-white hover:border-emerald-200 hover:bg-emerald-50/30"
                             }`}
                             onClick={(e) => {
                               if (isClaimed) {
@@ -817,21 +819,15 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                               )}
                             </div>
                             {gift.purchase_link && (
-                              isClaimed ? (
-                                <span className="text-xs font-medium text-gray-400 cursor-not-allowed line-through select-none">
-                                  View ↗
-                                </span>
-                              ) : (
-                                <a
-                                  href={gift.purchase_link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-xs font-medium text-emerald-600 hover:underline"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  View ↗
-                                </a>
-                              )
+                              <a
+                                href={gift.purchase_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs font-medium text-emerald-600 hover:underline"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                View ↗
+                              </a>
                             )}
                           </label>
                         );
@@ -850,8 +846,8 @@ export default function RSVP({ loaderData, actionData }: Route.ComponentProps) {
                       {isSubmitting
                         ? "Submitting…"
                         : !hasAvailableGifts
-                        ? "All Gifts Have Been Selected"
-                        : `Submit Gift Selection (${selectedGifts.size})`}
+                          ? "All Gifts Have Been Selected"
+                          : `Submit Gift Selection (${selectedGifts.size})`}
                     </button>
                   </Form>
                 </>

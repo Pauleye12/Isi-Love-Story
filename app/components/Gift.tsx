@@ -153,7 +153,7 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
                       setTimeout(() => setCopied(false), 2000);
                     });
                   }}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-[#50C878] to-[#3da863] hover:from-[#5dd889] hover:to-[#50C878] text-stone-950 font-sans text-xs uppercase tracking-wider px-5 py-2.5 rounded-full shadow-md font-medium cursor-pointer transition-colors w-fit justify-center"
+                  className="inline-flex items-center gap-2 bg-linear-to-r from-[#50C878] to-[#3da863] hover:from-[#5dd889] hover:to-[#50C878] text-stone-950 font-sans text-xs uppercase tracking-wider px-5 py-2.5 rounded-full shadow-md font-medium cursor-pointer transition-colors w-fit justify-center"
                 >
                   {copied ? "Copied!" : "Copy Number"}
                 </button>
@@ -258,7 +258,9 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
 
                 {!hasAvailableGifts && (
                   <div className="mb-4 rounded-xl border border-amber-500/40 bg-amber-950/30 px-4 py-3 text-center text-xs text-amber-200">
-                    All gifts on the registry have been selected. Thank you for your generosity! You can still send a monetary gift using the bank account details above.
+                    All gifts on the registry have been selected. Thank you for
+                    your generosity! You can still send a monetary gift using
+                    the bank account details above.
                   </div>
                 )}
 
@@ -266,7 +268,7 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
                   {(gifts ?? []).map((gift) => {
                     const giftIdStr = String(gift.id);
                     const isClaimed = Boolean(
-                      gift.chosen_by && gift.chosen_by !== "none"
+                      gift.chosen_by && gift.chosen_by !== "none",
                     );
                     const isSelected = selectedGifts.has(giftIdStr);
                     return (
@@ -276,8 +278,8 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
                           isClaimed
                             ? "cursor-not-allowed border-stone-800/80 bg-stone-900/30 opacity-50 select-none"
                             : isSelected
-                            ? "border-[#50C878] bg-[#50C878]/15 shadow-sm cursor-pointer"
-                            : "cursor-pointer border-stone-800 bg-stone-900/40 hover:border-[#50C878]/40 hover:bg-stone-900/60"
+                              ? "border-[#50C878] bg-[#50C878]/15 shadow-sm cursor-pointer"
+                              : "cursor-pointer border-stone-800 bg-stone-900/40 hover:border-[#50C878]/40 hover:bg-stone-900/60"
                         }`}
                         onClick={(e) => {
                           if (isClaimed) {
@@ -320,21 +322,15 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
                           )}
                         </div>
                         {gift.purchase_link && (
-                          isClaimed ? (
-                            <span className="text-xs font-medium text-stone-500 cursor-not-allowed line-through select-none">
-                              View ↗
-                            </span>
-                          ) : (
-                            <a
-                              href={gift.purchase_link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs font-medium text-[#50C878] hover:underline"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              View ↗
-                            </a>
-                          )
+                          <a
+                            href={gift.purchase_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-medium text-emerald-600 hover:underline"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            View ↗
+                          </a>
                         )}
                       </label>
                     );
@@ -359,8 +355,8 @@ export default function Gift({ displayTexts, gifts = [] }: GiftProps) {
                     {isSubmitting
                       ? "Submitting…"
                       : !hasAvailableGifts
-                      ? "All Gifts Have Been Selected"
-                      : `Submit Gift Selection (${selectedGifts.size})`}
+                        ? "All Gifts Have Been Selected"
+                        : `Submit Gift Selection (${selectedGifts.size})`}
                   </button>
                 ) : (
                   <Link
