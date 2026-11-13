@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { data, Form, Link, useNavigation } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { data, Form, Link, useNavigation, useSearchParams } from "react-router";
 import type { Route } from "./+types/admin";
 import { createClient } from "~/utils/supabase.server";
 import "../styles/admin.css";
@@ -32,6 +32,13 @@ export async function loader({ request }: Route.LoaderArgs) {
       {
         authenticated: false as const,
         guests: [],
+        totalGuestStats: {
+          total: 0,
+          checkedIn: 0,
+          available: 0,
+          unavailable: 0,
+          pending: 0,
+        },
         gifts: [],
         displayTexts: null,
         error: null,
@@ -40,11 +47,36 @@ export async function loader({ request }: Route.LoaderArgs) {
     );
   }
 
-  const [guestsRes, giftsRes, displayTextsRes] = await Promise.all([
-    supabase
-      .from("guests")
-      .select("*")
-      .order("created_at", { ascending: false }),
+  const url = new URL(request.url);
+  const search = url.searchParams.get("search")?.trim() || "";
+  const filter = url.searchParams.get("filter")?.trim() || "";
+  const sort = url.searchParams.get("sort")?.trim() || "";
+
+  // Query for guests with search, filter, and sort directly from DB
+  let guestsQuery = supabase.from("guests").select("*");
+
+  if (search) {
+    guestsQuery = guestsQuery.ilike("full_name", `%${search}%`);
+  }
+
+  if (
+    filter &&
+    ["Available", "No response yet", "Not Available"].includes(filter)
+  ) {
+    guestsQuery = guestsQuery.eq("availability", filter);
+  }
+
+  if (sort === "asc") {
+    guestsQuery = guestsQuery.order("full_name", { ascending: true });
+  } else if (sort === "desc") {
+    guestsQuery = guestsQuery.order("full_name", { ascending: false });
+  } else {
+    guestsQuery = guestsQuery.order("created_at", { ascending: false });
+  }
+
+  const [statsRes, guestsRes, giftsRes, displayTextsRes] = await Promise.all([
+    supabase.from("guests").select("availability, checked_in"),
+    guestsQuery,
     supabase
       .from("gifts")
       .select("*")
@@ -57,10 +89,20 @@ export async function loader({ request }: Route.LoaderArgs) {
       .maybeSingle(),
   ]);
 
+  const allGuests = statsRes.data ?? [];
+  const totalGuestStats = {
+    total: allGuests.length,
+    checkedIn: allGuests.filter((g: any) => g.checked_in).length,
+    available: allGuests.filter((g: any) => g.availability === "Available").length,
+    unavailable: allGuests.filter((g: any) => g.availability === "Not Available").length,
+    pending: allGuests.filter((g: any) => g.availability === "No response yet").length,
+  };
+
   return data(
     {
       authenticated: true as const,
       guests: guestsRes.data ?? [],
+      totalGuestStats,
       gifts: giftsRes.data ?? [],
       displayTexts: displayTextsRes.data ?? null,
       error: null,
@@ -315,9 +357,105 @@ export default function Admin({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const { authenticated, guests, gifts, displayTexts } = loaderData;
+  const { authenticated, guests, gifts, displayTexts, totalGuestStats } =
+    loaderData;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentSearch = searchParams.get("search") || "";
+  const currentFilter = searchParams.get("filter") || "";
+  const currentSort = searchParams.get("sort") || "";
+
+  const [searchInputValue, setSearchInputValue] = useState(currentSearch);
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+  const filterDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Sync search input if URL changes externally
+  useEffect(() => {
+    setSearchInputValue(currentSearch);
+  }, [currentSearch]);
+
+  // Real-time search as the admin types (debounced by 250ms)
+  useEffect(() => {
+    if (searchInputValue.trim() === currentSearch) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const newParams = new URLSearchParams(searchParams);
+      const trimmed = searchInputValue.trim();
+      if (trimmed) {
+        newParams.set("search", trimmed);
+      } else {
+        newParams.delete("search");
+      }
+      setSearchParams(newParams, { preventScrollReset: true, replace: true });
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [searchInputValue, currentSearch, searchParams, setSearchParams]);
+
+  // Click outside to close filter dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        filterDropdownRef.current &&
+        !filterDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsFilterDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const updateQueryParams = (updates: Record<string, string | null>) => {
+    const newParams = new URLSearchParams(searchParams);
+    for (const [key, value] of Object.entries(updates)) {
+      if (!value) {
+        newParams.delete(key);
+      } else {
+        newParams.set(key, value);
+      }
+    }
+    setSearchParams(newParams, { preventScrollReset: true, replace: true });
+  };
+
+  const handleClearSearch = () => {
+    setSearchInputValue("");
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete("search");
+    setSearchParams(newParams, { preventScrollReset: true, replace: true });
+  };
+
+  const handleFilterSelect = (filterValue: string) => {
+    setIsFilterDropdownOpen(false);
+    updateQueryParams({ filter: filterValue || null });
+  };
+
+  const handleSortToggle = () => {
+    let nextSort: string | null = null;
+    if (!currentSort) {
+      nextSort = "asc";
+    } else if (currentSort === "asc") {
+      nextSort = "desc";
+    } else {
+      nextSort = null;
+    }
+    updateQueryParams({ sort: nextSort });
+  };
+
+  const handleResetAllFilters = () => {
+    setSearchInputValue("");
+    updateQueryParams({ search: null, filter: null, sort: null });
+  };
+
+  const hasActiveFilters = Boolean(
+    currentSearch || currentFilter || currentSort,
+  );
 
   const [activeTab, setActiveTab] = useState<
     "guests" | "gifts" | "displayTexts"
@@ -443,17 +581,19 @@ export default function Admin({
   }
 
   // ---------- Dashboard Stats ----------
-  const totalGuests = guests.length;
-  const checkedIn = guests.filter((g: any) => g.checked_in).length;
-  const available = guests.filter(
-    (g: any) => g.availability === "Available",
-  ).length;
-  const unavailable = guests.filter(
-    (g: any) => g.availability === "Not Available",
-  ).length;
-  const pending = guests.filter(
-    (g: any) => g.availability === "No response yet",
-  ).length;
+  const totalGuests = totalGuestStats?.total ?? guests.length;
+  const checkedIn =
+    totalGuestStats?.checkedIn ??
+    guests.filter((g: any) => g.checked_in).length;
+  const available =
+    totalGuestStats?.available ??
+    guests.filter((g: any) => g.availability === "Available").length;
+  const unavailable =
+    totalGuestStats?.unavailable ??
+    guests.filter((g: any) => g.availability === "Not Available").length;
+  const pending =
+    totalGuestStats?.pending ??
+    guests.filter((g: any) => g.availability === "No response yet").length;
   const totalGifts = gifts.length;
   const chosenGifts = gifts.filter((g: any) => g.chosen_by !== "none").length;
 
@@ -606,21 +746,256 @@ export default function Admin({
             {/* Guest Table */}
             <div className="section-card">
               <div className="section-card-header">
-                <h2>Guest List</h2>
+                <div className="guest-list-title-group">
+                  <h2>Guest List</h2>
+                  <span className="guest-count-badge">
+                    {hasActiveFilters
+                      ? `${guests.length} of ${totalGuests} guests`
+                      : `${guests.length} guests`}
+                  </span>
+                </div>
               </div>
+
+              {/* Toolbar: Real-time Search, Availability Filter, Reset */}
+              <div className="table-toolbar">
+                <div className="search-input-wrapper">
+                  <svg
+                    className="search-icon"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                  <input
+                    type="text"
+                    className="form-input search-input"
+                    placeholder="Search attendee by name..."
+                    value={searchInputValue}
+                    onChange={(e) => setSearchInputValue(e.target.value)}
+                  />
+                  {searchInputValue && (
+                    <button
+                      type="button"
+                      className="search-clear-btn"
+                      onClick={handleClearSearch}
+                      title="Clear search"
+                      aria-label="Clear search"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+
+                {/* Filter button with 3 options: "Available", "No response yet", "Not Available" */}
+                <div
+                  className="filter-dropdown-container"
+                  ref={filterDropdownRef}
+                >
+                  <button
+                    type="button"
+                    className={`btn btn-sm ${currentFilter ? "btn-filter-active" : "btn-ghost"}`}
+                    onClick={() => setIsFilterDropdownOpen((prev) => !prev)}
+                    aria-haspopup="true"
+                    aria-expanded={isFilterDropdownOpen}
+                  >
+                    <svg
+                      className="filter-icon"
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                    </svg>
+                    <span>
+                      {currentFilter
+                        ? `Filter: ${currentFilter}`
+                        : "Filter Availability"}
+                    </span>
+                    <span className="dropdown-caret">▾</span>
+                  </button>
+
+                  {isFilterDropdownOpen && (
+                    <div className="filter-dropdown-menu">
+                      <div className="filter-dropdown-header">
+                        Filter by Availability
+                      </div>
+                      <button
+                        type="button"
+                        className={`filter-dropdown-item ${!currentFilter ? "active" : ""}`}
+                        onClick={() => handleFilterSelect("")}
+                      >
+                        <span>All Guests</span>
+                        {!currentFilter && (
+                          <span className="check-mark">✓</span>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className={`filter-dropdown-item ${currentFilter === "Available" ? "active" : ""}`}
+                        onClick={() => handleFilterSelect("Available")}
+                      >
+                        <span className="badge badge-available">
+                          Available
+                        </span>
+                        {currentFilter === "Available" && (
+                          <span className="check-mark">✓</span>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className={`filter-dropdown-item ${currentFilter === "No response yet" ? "active" : ""}`}
+                        onClick={() => handleFilterSelect("No response yet")}
+                      >
+                        <span className="badge badge-pending">
+                          No response yet
+                        </span>
+                        {currentFilter === "No response yet" && (
+                          <span className="check-mark">✓</span>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className={`filter-dropdown-item ${currentFilter === "Not Available" ? "active" : ""}`}
+                        onClick={() => handleFilterSelect("Not Available")}
+                      >
+                        <span className="badge badge-unavailable">
+                          Not Available
+                        </span>
+                        {currentFilter === "Not Available" && (
+                          <span className="check-mark">✓</span>
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm reset-filters-btn"
+                    onClick={handleResetAllFilters}
+                  >
+                    Reset Filters
+                  </button>
+                )}
+              </div>
+
               <div className="data-table-wrapper">
                 {guests.length === 0 ? (
                   <div className="empty-state">
-                    <div className="empty-icon">👥</div>
-                    <p>No guests added yet. Add your first guest above.</p>
+                    <div className="empty-icon">
+                      {hasActiveFilters ? "🔍" : "👥"}
+                    </div>
+                    <p>
+                      {hasActiveFilters
+                        ? "No guests found matching your current search or filter."
+                        : "No guests added yet. Add your first guest above."}
+                    </p>
+                    {hasActiveFilters && (
+                      <button
+                        type="button"
+                        className="btn btn-ghost btn-sm"
+                        style={{ marginTop: "0.75rem" }}
+                        onClick={handleResetAllFilters}
+                      >
+                        Clear Filters
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <table className="data-table">
                     <thead>
                       <tr>
-                        <th>Full Name</th>
+                        <th>
+                          <div className="th-sortable-content">
+                            <span>Full Name</span>
+                            <button
+                              type="button"
+                              className={`column-sort-button ${currentSort ? "active" : ""}`}
+                              onClick={handleSortToggle}
+                              aria-label={
+                                currentSort === "asc"
+                                  ? "Sorted Ascending. Click for Descending"
+                                  : currentSort === "desc"
+                                  ? "Sorted Descending. Click to reset order"
+                                  : "Sort by Name"
+                              }
+                              title={
+                                currentSort === "asc"
+                                  ? "Sorted Ascending. Click for Descending"
+                                  : currentSort === "desc"
+                                  ? "Sorted Descending. Click to reset order"
+                                  : "Sort by Name"
+                              }
+                            >
+                              {currentSort === "asc" ? (
+                                <svg
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <path d="M12 19V5" />
+                                  <path d="m5 12 7-7 7 7" />
+                                </svg>
+                              ) : currentSort === "desc" ? (
+                                <svg
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <path d="M12 5v14" />
+                                  <path d="m19 12-7 7-7-7" />
+                                </svg>
+                              ) : (
+                                <svg
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <path d="m7 15 5 5 5-5" />
+                                  <path d="m7 9 5-5 5 5" />
+                                </svg>
+                              )}
+                            </button>
+                          </div>
+                        </th>
                         <th>Code</th>
-                        <th>Availability</th>
+                        <th>
+                          Availability
+                          {currentFilter && (
+                            <span className="th-filter-tag">
+                              {" "}
+                              ({currentFilter})
+                            </span>
+                          )}
+                        </th>
                         <th>Checked In</th>
                         <th>Actions</th>
                       </tr>

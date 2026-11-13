@@ -277,6 +277,213 @@
   min-width: 160px;
 }
 
+/* ---------- Table Toolbar (Search & Filters) ---------- */
+.guest-list-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.guest-count-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+}
+
+.table-toolbar {
+  padding: 0.875rem 1.25rem;
+  background: #fafbfc;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 220px;
+  max-width: 360px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.search-input {
+  padding-left: 2.25rem !important;
+  padding-right: 2rem !important;
+  height: 36px;
+  font-size: 0.8125rem;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.125rem;
+  line-height: 1;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-clear-btn:hover {
+  color: #4b5563;
+}
+
+/* ---------- Filter Dropdown ---------- */
+.filter-dropdown-container {
+  position: relative;
+}
+
+.btn-filter-active {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1.5px solid #a7f3d0;
+  font-weight: 600;
+}
+
+.btn-filter-active:hover {
+  background: #d1fae5;
+  border-color: #6ee7b7;
+}
+
+.filter-icon {
+  flex-shrink: 0;
+}
+
+.dropdown-caret {
+  font-size: 0.6875rem;
+  margin-left: 0.25rem;
+}
+
+.filter-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 30;
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 0.375rem;
+  animation: modal-fade-in 0.12s ease;
+}
+
+.filter-dropdown-header {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9ca3af;
+  padding: 0.375rem 0.625rem;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 0.25rem;
+}
+
+.filter-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.625rem;
+  font-size: 0.8125rem;
+  color: #374151;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.filter-dropdown-item:hover {
+  background: #f3f4f6;
+}
+
+.filter-dropdown-item.active {
+  background: #f0fdf4;
+  font-weight: 600;
+  color: #065f46;
+}
+
+.filter-dropdown-item .check-mark {
+  color: #059669;
+  font-weight: 700;
+  margin-left: 0.5rem;
+}
+
+.reset-filters-btn {
+  color: #dc2626;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.reset-filters-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+/* ---------- Column Header Sorting ---------- */
+.th-sortable-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+.column-sort-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.column-sort-button:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  color: #111827;
+}
+
+.column-sort-button.active {
+  background: #ecfdf5;
+  border-color: #059669;
+  color: #065f46;
+  box-shadow: 0 1px 2px rgba(5, 150, 105, 0.1);
+}
+
+.th-filter-tag {
+  font-size: 0.6875rem;
+  color: #059669;
+  font-weight: 600;
+  text-transform: none;
+}
+
 /* ---------- Tables ---------- */
 .data-table-wrapper {
   overflow-x: auto;
@@ -465,6 +672,30 @@
 
   .tab-nav {
     padding: 0 1rem;
+  }
+
+  .table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.625rem;
+  }
+
+  .search-input-wrapper {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .filter-dropdown-container {
+    width: 100%;
+  }
+
+  .filter-dropdown-container .btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-dropdown-menu {
+    width: 100%;
   }
 }
 
